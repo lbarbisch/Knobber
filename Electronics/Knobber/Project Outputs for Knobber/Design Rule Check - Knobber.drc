@@ -1,0 +1,106 @@
+Protel Design System Design Rule Check
+PCB File : \\192.168.1.200\Storragepool\Datastorrage\CAE\Altium\Projects\Knobber\Knobber.PcbDoc
+Date     : 24.03.2024
+Time     : 01:59:45
+
+Processing Rule : Clearance Constraint (Gap=0.15mm) (IsVia),(IsVia)
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=0.5mm) (OnLayer('Keep-Out Layer')),(All)
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=1mm) (InNetClass('PrimarySide')),(InNetClass('SecondarySide'))
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=1mm) (InNetClass('PrimarySide')),(InNet('EARTH') or InNet('EARTH_G2') or InNet('EARTH_USB') or InNet('NetC3_2'))
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=0.5mm) (InNetClass('SecondarySide')),(InNet('EARTH') or InNet('EARTH_G2') or InNet('EARTH_USB') or InNet('NetC3_2'))
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=0.2mm) (All),(All)
+Rule Violations :0
+
+Processing Rule : Clearance Constraint (Gap=0.5mm) (not OnTopLayer AND NOT OnBottomLayer),((ObjectKind = 'Pad') And (Layer = 'MultiLayer') And (PadIsPlated = 'False'))
+Rule Violations :0
+
+Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
+Rule Violations :0
+
+Processing Rule : Un-Routed Net Constraint ( (All) )
+Rule Violations :0
+
+Processing Rule : Width Constraint (Min=0.15mm) (Max=2mm) (Preferred=0.2mm) (All)
+Rule Violations :0
+
+Processing Rule : Routing Via (Templates Used To Check Via: v55h30m0mx0) (All)
+Rule Violations :0
+
+Processing Rule : Routing Via (MinHoleWidth=0.15mm) (MaxHoleWidth=0.15mm) (PreferredHoleWidth=0.15mm) (MinWidth=0.35mm) (MaxWidth=0.35mm) (PreferedWidth=0.35mm) (((ObjectKind = 'Via') AND (StartLayer = 'Top Layer') AND (StopLayer = 'InternalPlane1')) OR ((ObjectKind = 'Via') AND (StartLayer = 'Bottom Layer') AND (StopLayer = 'InternalPlane2')))
+Rule Violations :0
+
+Processing Rule : Power Plane Connect Rule(Direct Connect )(Expansion=0.508mm) (Conductor Width=0.254mm) (Air Gap=0.254mm) (Entries=4) (All)
+Rule Violations :0
+
+Processing Rule : Power Plane Connect Rule(Direct Connect )(Expansion=0.508mm) (Conductor Width=0.254mm) (Air Gap=0.254mm) (Entries=4) ((InComponentClass('SpecialConnector')))
+Rule Violations :0
+
+Processing Rule : Power Plane Connect Rule(Relief Connect )(Expansion=0.35mm) (Conductor Width=0.25mm) (Air Gap=0.25mm) (Entries=4) ((InComponentClass('All Components')))
+Rule Violations :0
+
+Processing Rule : Fabrication Testpoint Style (Under Component=Yes) (Disabled)(IsTestpoint)
+Rule Violations :0
+
+Processing Rule : Fabrication Testpoint Usage (Valid =One Required, Allow multiple per net=No) (IsTestpoint)
+Rule Violations :0
+
+Processing Rule : Assembly Testpoint Style (Under Component=Yes) (Disabled)(IsTestpoint)
+Rule Violations :0
+
+Processing Rule : Assembly Testpoint Usage (Valid =One Required, Allow multiple per net=No) (IsTestpoint)
+Rule Violations :0
+
+Processing Rule : Minimum Annular Ring (Minimum=0.12mm) (IsVia)
+Rule Violations :0
+
+Processing Rule : Minimum Annular Ring (Minimum=0.15mm) (All)
+Rule Violations :0
+
+Processing Rule : Hole Size Constraint (Min=0.2mm) (Max=6.4mm) (All)
+Rule Violations :0
+
+Processing Rule : Pads and Vias to follow the Drill pairs settings
+Rule Violations :0
+
+Processing Rule : Hole To Hole Clearance (Gap=0.254mm) (All),(All)
+Rule Violations :0
+
+Processing Rule : Minimum Solder Mask Sliver (Gap=0.1mm) (All),(All)
+Rule Violations :0
+
+Processing Rule : Minimum Solder Mask Sliver (Gap=0mm) (IsComponent),(All)
+Rule Violations :0
+
+Processing Rule : Net Antennae (Tolerance=0mm) (All)
+Rule Violations :0
+
+Processing Rule : Vias Under SMD Constraint (Allowed=Not Allowed) (All)
+Rule Violations :0
+
+Processing Rule : Vias Under SMD Constraint (Allowed=Allowed) (HasFootprint('TP_1.0mm'))
+Rule Violations :0
+
+Processing Rule : Component Clearance Constraint ( Horizontal Gap = 0.254mm, Vertical Gap = 0.254mm ) (IsComponent),(All) 
+Rule Violations :0
+
+Processing Rule : Height Constraint (Min=0mm) (Max=25.4mm) (Prefered=12.7mm) (All)
+Rule Violations :0
+
+Waived Violations Of Rule : Clearance Constraint (Gap=0.2mm) (All),(All)
+   Waived Violation between Clearance Constraint: (0.106mm < 0.2mm) Between Pad J1-1(-7.818mm,5.715mm) on Top Layer And Pad J1-2(-7.168mm,5.715mm) on Top Layer Waived by Lukas Barbisch at 24.03.2024 01:45:35
+Waived Violations :1
+
+
+Violations Detected : 0
+Waived Violations : 1
+Time Elapsed        : 00:00:01

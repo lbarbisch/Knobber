@@ -1,0 +1,54 @@
+Altium Designer Pick and Place Locations
+C:\Users\Lukas\AppData\Local\TempReleases\Snapshot\5\No Variant\Pick Place\XXX.XXXXPCB_Assy_Revision_Knobber.txt
+
+========================================================================================================================
+File Design Information:
+
+Date:       24.03.24
+Time:       02:05
+Revision:   Not in VersionControl
+Variant:    No variations
+Units used: mm
+
+Designator Comment                            Layer       Footprint                    Center-X(mm) Center-Y(mm) Rotation Description                                       
+R17        "Res 5k1 0603"                     BottomLayer R-0603_1608_050_L_RF         1.5000       12.0000      270      "Res SMD 5k1 1% 0.1W 0603"                        
+R16        "Res 5k1 0603"                     BottomLayer R-0603_1608_050_L_RF         -1.5000      12.0000      270      "Res SMD 5k1 1% 0.1W 0603"                        
+R6         "Res 10k 0603"                     TopLayer    R-0603_1608_050_L_RF         -2.4130      -1.1430      0        "Res SMD 10k 1% 0.1W 0603"                        
+R4         "Res 1k 0603"                      TopLayer    R-0603_1608_050_L_RF         -6.3500      -5.9690      0        "Res SMD 1k 1% 0.1W 0603"                         
+R1         "Res 10k 0603"                     TopLayer    R-0603_1608_050_L_RF         -6.3500      -4.6990      180      "Res SMD 10k 1% 0.1W 0603"                        
+X1         "CONN HEADER 2POS 1ROW THT 2.54MM" TopLayer    X-0508X0254_R_WE_61300211121 -9.9060      -9.9060      315      "CONN HEADER 2POS 1ROW THT 2.54MM WE 61300211121" 
+V3         APA102C                            BottomLayer V_2020_P6_N_RF               -3.0000      -7.6370      0        "RGB LED SPI Interface"                           
+R3         "Res 4k7 0603"                     BottomLayer R-0603_1608_050_L_RF         5.0800       0.6350       0        "Res SMD 4k7 1% 0.1W 0603"                        
+R2         "Res 4k7 0603"                     BottomLayer R-0603_1608_050_L_RF         5.0800       -0.6350      0        "Res SMD 4k7 1% 0.1W 0603"                        
+D2         AS5600                             BottomLayer SOIC8_N_RF                   0.0000       0.0000       0        "IC Sensor Rotation Magnet 12bit"                 
+C1         "Cap 1u 0603"                      BottomLayer C-0603_1608_095_L_RF         0.0000       -3.8100      180      "Cap Cer SMD 1u 16V 10% 0603 X7R"                 
+C6         "Cap 100n 0603"                    BottomLayer C-0603_1608_095_L_RF         3.0000       -9.6370      180      "Cap Cer SMD 100n 100V 10% 0603 X7R"              
+X4         ""                                 TopLayer    Lötpad_2x3                   -13.4050     -2.5000      90       "Solderpad 2mm x 3mm"                             
+X3         ""                                 TopLayer    Lötpad_2x3                   -13.9050     0.0000       90       "Solderpad 2mm x 3mm"                             
+X2         ""                                 TopLayer    Lötpad_2x3                   -13.4050     2.5000       90       "Solderpad 2mm x 3mm"                             
+X5         105450-0101                        TopLayer    105450-0101                  0.0000       10.7000      180      "CONN USB-C 16pin"                                
+V2         APA102C                            BottomLayer V_2020_P6_N_RF               3.0000       -7.6370      0        "RGB LED SPI Interface"                           
+V1         MBR0520L                           TopLayer    SOD123_L_RF                  -3.9370      5.7150       180      "Diode Schottky 20V 0.5A SOD123"                  
+R12        "Res 10k 0603"                     BottomLayer R-0603_1608_050_L_RF         -8.2550      4.0640       0        "Res SMD 10k 1% 0.1W 0603"                        
+R11        "Res 10k 0603"                     BottomLayer R-0603_1608_050_L_RF         -8.2550      2.7940       0        "Res SMD 10k 1% 0.1W 0603"                        
+R10        "Res 10k 0603"                     BottomLayer R-0603_1608_050_L_RF         0.8390       3.6830       180      "Res SMD 10k 1% 0.1W 0603"                        
+R9         "Res 10k 0603"                     BottomLayer R-0603_1608_050_L_RF         -5.8420      4.0640       0        "Res SMD 10k 1% 0.1W 0603"                        
+R8         "Res 10k 0603"                     BottomLayer R-0603_1608_050_L_RF         -5.8420      2.7940       0        "Res SMD 10k 1% 0.1W 0603"                        
+R7         "Res 10k 0603"                     BottomLayer R-0603_1608_050_L_RF         -1.5240      3.6830       180      "Res SMD 10k 1% 0.1W 0603"                        
+R14        "Res 100R 0603"                    BottomLayer R-0603_1608_050_L_RF         5.0800       -2.2860      0        "Res SMD 100R 1% 0.1W 0603"                       
+R13        "Res 100R 0603"                    BottomLayer R-0603_1608_050_L_RF         5.0800       -3.5560      180      "Res SMD 100R 1% 0.1W 0603"                       
+R15        "Res 10k 0603"                     TopLayer    R-0603_1608_050_L_RF         8.2550       -8.6360      90       "Res SMD 10k 1% 0.1W 0603"                        
+R5         "Res 10k 0603"                     TopLayer    R-0603_1608_050_L_RF         -2.4130      -4.6990      0        "Res SMD 10k 1% 0.1W 0603"                        
+J1         "Solder jumper 2Pin"               TopLayer    J-1206_Solderjumper_2Pin     -7.4930      5.7150       0        "Solder jumper 2Pin"                              
+IC1        CH340                              BottomLayer SOIC16_N_RF                  11.3030      0.0000       0        "IC Converter USB UART"                           
+D1         STM32G070RBT6                      TopLayer    LQFP64_50P1200X1200X160-64N  8.1280       0.0000       180      "IC MCU Cortex M0+ 128k Flash, 36k RAM, 64MHz"    
+D3         MP6543HGL                          TopLayer    QFN24_5x7_N_RF               -8.6550      0.0000       270      "Motor Driver 3-Phase 3-22V 2A"                   
+C5         "Cap 100n 0603"                    BottomLayer C-0603_1608_095_L_RF         -3.0000      -9.6370      180      "Cap Cer SMD 100n 100V 10% 0603 X7R"              
+C9         "Cap 100n 0603"                    TopLayer    C-0603_1608_095_L_RF         9.5250       -8.6360      90       "Cap Cer SMD 100n 100V 10% 0603 X7R"              
+C7         "Cap 100n 0603"                    TopLayer    C-0603_1608_095_L_RF         5.5880       -8.6360      90       "Cap Cer SMD 100n 100V 10% 0603 X7R"              
+C4         "CAP 10u 16V 0805"                 TopLayer    C-0805_2012_145_L_RF         -6.2230      -3.1750      180      "Cap Cer SMD 10u 16V 10% 0805 X5R"                
+C3         "Cap 1u 0603"                      TopLayer    C-0603_1608_095_L_RF         -9.5250      -3.1750      0        "Cap Cer SMD 1u 16V 10% 0603 X7R"                 
+C2         "CAP 10u 1210"                     TopLayer    C-1210_3225_230_L_RF         -11.1760     -5.4610      0        "CAP CER 10uF 50V X7S 1210"                       
+C8         "Cap 1u 0603"                      TopLayer    C-0603_1608_095_L_RF         6.9850       -8.6360      90       "Cap Cer SMD 1u 16V 10% 0603 X7R"                 
+C11        "Cap 100n 0603"                    BottomLayer C-0603_1608_095_L_RF         9.5250       -5.9690      0        "Cap Cer SMD 100n 100V 10% 0603 X7R"              
+C10        "Cap 100n 0603"                    BottomLayer C-0603_1608_095_L_RF         9.5250       -7.3660      0        "Cap Cer SMD 100n 100V 10% 0603 X7R"              
