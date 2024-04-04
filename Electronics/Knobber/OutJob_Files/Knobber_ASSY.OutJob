@@ -17,11 +17,11 @@ RevisionNamingSchemeGUID=
 [OutputGroup1]
 Name=Knobber_ASSY.OutJob
 Description=
-TargetOutputMedium=BOM
+TargetOutputMedium=Manufacturing
 VariantName=[No Variations]
-VariantScope=2
-CurrentConfigurationName=Variant 951.xxxx
-TargetPrinter=Brother DCP-1610W series
+VariantScope=1
+CurrentConfigurationName=
+TargetPrinter=Microsoft Print to PDF
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 OutputMedium1=Print Job
 OutputMedium1_Type=Printer
@@ -119,7 +119,7 @@ OutputName2=Generates pick and place files
 OutputCategory2=Assembly
 OutputDocumentPath2=
 OutputVariantName2=
-OutputEnabled2=0
+OutputEnabled2=1
 OutputEnabled2_OutputMedium1=0
 OutputEnabled2_OutputMedium2=0
 OutputEnabled2_OutputMedium3=1
@@ -226,7 +226,7 @@ OutputName5=Bill of Materials
 OutputCategory5=Report
 OutputDocumentPath5=
 OutputVariantName5=
-OutputEnabled5=1
+OutputEnabled5=0
 OutputEnabled5_OutputMedium1=0
 OutputEnabled5_OutputMedium2=0
 OutputEnabled5_OutputMedium3=0
@@ -270,7 +270,7 @@ OutputName7=PCB 3D Print Top
 OutputCategory7=Documentation
 OutputDocumentPath7=Knobber.PcbDoc
 OutputVariantName7=
-OutputEnabled7=0
+OutputEnabled7=1
 OutputEnabled7_OutputMedium1=0
 OutputEnabled7_OutputMedium2=0
 OutputEnabled7_OutputMedium3=2
@@ -280,13 +280,13 @@ OutputEnabled7_OutputMedium6=0
 OutputDefault7=0
 PageOptions7=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
 Configuration7_Name1=OutputConfigurationParameter1
-Configuration7_Item1=Record=Pcb3DPrintView|ResX=600|ResY=600|ViewX=30183348|ViewY=29638827|LookAtX=98684848|LookAtY=87309272|LookAtZ=0|UpX=0|UpY=1|UpZ=0|FOV=0|QuatX=0|QuatY=0|QuatZ=0|QuatW=1|Zoom=1.22474482542781E-5|UnitsPercent=True|UnitsDPI=True|LockResAspect=True|ViewConfigType=.config_3d|CustomCamera=False|ViewFromTop=True|ScreenWidth=0|ScreenHeight=0|ImageOutputType=1|ViewConfig= |DocumentPath=\\192.168.1.200\Storragepool\Datastorrage\CAE\Altium\Templates\Private Projects\[ProjectName].PcbDoc
+Configuration7_Item1=Record=Pcb3DPrintView|ResX=600|ResY=600|ViewX=30183348|ViewY=29638827|LookAtX=98684848|LookAtY=87309272|LookAtZ=0|UpX=0|UpY=1|UpZ=0|FOV=0|QuatX=0|QuatY=0|QuatZ=0|QuatW=1|Zoom=1.22474482542781E-5|UnitsPercent=True|UnitsDPI=True|LockResAspect=True|ViewConfigType=.config_3d|CustomCamera=False|ViewFromTop=True|ScreenWidth=0|ScreenHeight=0|ImageOutputType=1|ViewConfig= |DocumentPath=\\192.168.1.200\Storragepool\Datastorrage\Projects\Knobber\Electronics\Knobber\Knobber.PcbDoc
 OutputType8=PCB 3D Print
 OutputName8=PCB 3D Print Bottom
 OutputCategory8=Documentation
 OutputDocumentPath8=Knobber.PcbDoc
 OutputVariantName8=
-OutputEnabled8=0
+OutputEnabled8=1
 OutputEnabled8_OutputMedium1=0
 OutputEnabled8_OutputMedium2=0
 OutputEnabled8_OutputMedium3=3
@@ -296,12 +296,12 @@ OutputEnabled8_OutputMedium6=0
 OutputDefault8=0
 PageOptions8=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=1|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=2|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-3|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
 Configuration8_Name1=OutputConfigurationParameter1
-Configuration8_Item1=Record=Pcb3DPrintView|ResX=600|ResY=600|ViewX=30183348|ViewY=29638827|LookAtX=98684848|LookAtY=87309272|LookAtZ=0|UpX=0|UpY=1|UpZ=0|FOV=0|QuatX=0|QuatY=0|QuatZ=0|QuatW=1|Zoom=1.22474482542781E-5|UnitsPercent=True|UnitsDPI=True|LockResAspect=True|ViewConfigType=.config_3d|CustomCamera=False|ViewFromTop=False|ScreenWidth=0|ScreenHeight=0|ImageOutputType=1|ViewConfig= |DocumentPath=\\192.168.1.200\Storragepool\Datastorrage\CAE\Altium\Templates\Private Projects\[ProjectName].PcbDoc
+Configuration8_Item1=Record=Pcb3DPrintView|ResX=600|ResY=600|ViewX=30183348|ViewY=29638827|LookAtX=98684848|LookAtY=87309272|LookAtZ=0|UpX=0|UpY=1|UpZ=0|FOV=0|QuatX=0|QuatY=0|QuatZ=0|QuatW=1|Zoom=1.22474482542781E-5|UnitsPercent=True|UnitsDPI=True|LockResAspect=True|ViewConfigType=.config_3d|CustomCamera=False|ViewFromTop=False|ScreenWidth=0|ScreenHeight=0|ImageOutputType=2|ViewConfig= |DocumentPath=\\192.168.1.200\Storragepool\Datastorrage\Projects\Knobber\Electronics\Knobber\Knobber.PcbDoc
 
 [PublishSettings]
 OutputFilePath2=C:\ProgramData\Altium\Altium Designer {0E4E1BA7-BB51-4A1F-880D-AD0C520AB478}\VaultEditCache\8DCA7ECE-FAC5-43E7-9EFB-209B2842E4C2\Released\Project Outputs for ProjectTemplate-GPV\Assembly\XXXXXXXXA_PCB_Title_PCBA.PDF
 ReleaseManaged2=1
-OutputBasePath2=
+OutputBasePath2=Project Outputs for Knobber
 OutputPathMedia2=
 OutputPathMediaValue2=Assembly
 OutputPathOutputer2=[Output Type]
@@ -326,9 +326,9 @@ ShowComponentParameters2=1
 GlobalBookmarks2=1
 PDFACompliance2=Disabled
 PDFVersion2=Default
-OutputFilePath3=C:\ProgramData\Altium\Altium Designer {0E4E1BA7-BB51-4A1F-880D-AD0C520AB478}\VaultEditCache\8DCA7ECE-FAC5-43E7-9EFB-209B2842E4C2\Released\Project Outputs for ProjectTemplate-GPV\
+OutputFilePath3=\\192.168.1.200\Storragepool\Datastorrage\Projects\Knobber\Electronics\Knobber\Project Outputs for Knobber\
 ReleaseManaged3=1
-OutputBasePath3=
+OutputBasePath3=Project Outputs for Knobber
 OutputPathMedia3=
 OutputPathMediaValue3=Assembly
 OutputPathOutputer3=[Output Type]
@@ -354,7 +354,7 @@ OutputFileNameSpecial4=
 OpenOutput4=1
 OutputFilePath5=C:\ProgramData\Altium\Altium Designer {0E4E1BA7-BB51-4A1F-880D-AD0C520AB478}\VaultEditCache\8DCA7ECE-FAC5-43E7-9EFB-209B2842E4C2\Released\Project Outputs for ProjectTemplate-GPV\
 ReleaseManaged5=1
-OutputBasePath5=
+OutputBasePath5=Project Outputs for Knobber
 OutputPathMedia5=
 OutputPathMediaValue5=
 OutputPathOutputer5=
@@ -367,7 +367,7 @@ OutputFileNameSpecial5=
 OpenOutput5=1
 OutputFilePath6=C:\ProgramData\Altium\Altium Designer {0E4E1BA7-BB51-4A1F-880D-AD0C520AB478}\VaultEditCache\8DCA7ECE-FAC5-43E7-9EFB-209B2842E4C2\Released\Project Outputs for ProjectTemplate-GPV\XXXXXXXX_A00_SchematicTitle_SCH.PDF
 ReleaseManaged6=1
-OutputBasePath6=
+OutputBasePath6=Project Outputs for Knobber
 OutputPathMedia6=
 OutputPathMediaValue6=
 OutputPathOutputer6=[Output Type]
@@ -396,7 +396,7 @@ PDFVersion6=Default
 [GeneratedFilesSettings]
 RelativeOutputPath2=C:\ProgramData\Altium\Altium Designer {0E4E1BA7-BB51-4A1F-880D-AD0C520AB478}\VaultEditCache\8DCA7ECE-FAC5-43E7-9EFB-209B2842E4C2\Released\Project Outputs for ProjectTemplate-GPV\Assembly\XXXXXXXXA_PCB_Title_PCBA.PDF
 OpenOutputs2=1
-RelativeOutputPath3=C:\ProgramData\Altium\Altium Designer {0E4E1BA7-BB51-4A1F-880D-AD0C520AB478}\VaultEditCache\8DCA7ECE-FAC5-43E7-9EFB-209B2842E4C2\Released\Project Outputs for ProjectTemplate-GPV\
+RelativeOutputPath3=\\192.168.1.200\Storragepool\Datastorrage\Projects\Knobber\Electronics\Knobber\Project Outputs for Knobber\
 OpenOutputs3=0
 AddToProject3=0
 TimestampFolder3=0

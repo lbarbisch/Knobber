@@ -85,6 +85,10 @@ void Error_Handler(void);
 #define nSLEEP_GPIO_Port GPIOA
 #define nFAULT_Pin GPIO_PIN_8
 #define nFAULT_GPIO_Port GPIOC
+#define SPI1_MOSI_Pin GPIO_PIN_6
+#define SPI1_MOSI_GPIO_Port GPIOD
+#define SPI1_SCK_Pin GPIO_PIN_3
+#define SPI1_SCK_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

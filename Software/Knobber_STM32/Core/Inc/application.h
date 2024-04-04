@@ -10,6 +10,10 @@
 
 #include "main.h"
 #include "sintab.h"
+#include "AP102_Driver.h"
+#include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
 
 void init();
 void mainloop();
