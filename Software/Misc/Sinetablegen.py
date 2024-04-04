@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 
-t = np.linspace(start=0, stop=2*np.pi, num=3600)
+t = np.linspace(start=0, stop=2*np.pi*7, num=3600)
 
 sintab = np.sin(t)
 #sintab += 1

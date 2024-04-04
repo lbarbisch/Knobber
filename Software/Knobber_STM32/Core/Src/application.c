@@ -14,17 +14,19 @@ extern TIM_HandleTypeDef htim1;
 extern UART_HandleTypeDef huart1;
 extern I2C_HandleTypeDef hi2c2;
 
-uint8_t power = 0;
+uint8_t power = 64;
 uint16_t angle = 0;
-uint16_t new_angle = 0;
 float voltage = 0;
 volatile bool enable = true;
 volatile bool faultstate = false;
 uint8_t received[2] = {0};
+volatile bool statisch = false;
 
 uint16_t adc_dma_results[5];
 
 volatile uint16_t phaseangle = 0;
+const uint16_t angle_cw = 2700;
+const uint16_t angle_ccw = 900;
 uint8_t Buffer[25] = {0};
 
 
@@ -59,46 +61,16 @@ void init()
 
 void mainloop()
 {
-	/*
-	for(uint16_t i = 0; i < 3600; i++)
-	{
-		setAngle(i);
-		//setPower(i);
-		//HAL_Delay(1);
-		voltage = getSupplyVoltage();
-		uint8_t test[] = "test";
-		HAL_UART_Transmit(&huart1, test, 5, 1000);
-	}
-	*/
-	//HAL_I2C_Mem_Read(&hi2c2, AS5600L_ADDR, 0x0C, I2C_MEMADD_SIZE_8BIT, received, 2, 1000);
-	//new_angle = received[1] + ((uint16_t)received[0] << 8);
-	//angle = (angle*7) % 4096;
+	// read and parse rawangle register of AS5600
+	HAL_I2C_Mem_Read(&hi2c2, AS5600L_ADDR, 0x0C, I2C_MEMADD_SIZE_8BIT, received, 2, 1000);
+	angle = received[1] + ((uint16_t)received[0] << 8);
 
-	//setAngle((phaseangle+angle) % 4096);
+	// map the 0-4096 from the encoder to the 0-3600 from the lookuptable
+	angle = (uint16_t)(angle*0.87890625);
 
-	//setAngle(angle);
-
-	//HAL_UART_Transmit(&huart1, received, 1, 1000);
-	HAL_UART_Transmit(&huart1, (uint8_t *)"START\n", 6, 1000);
-
-	power = 128;
-	HAL_Delay(500);
-	for (uint16_t x = 0; x < 3600; x+=10)
-	{
-		setAngle((x*7) % 3600);
-		HAL_Delay(100);
-		HAL_I2C_Mem_Read(&hi2c2, AS5600L_ADDR, 0x0C, I2C_MEMADD_SIZE_8BIT, received, 2, 1000);
-		new_angle = received[1] + ((uint16_t)received[0] << 8);
-		sprintf(Buffer, "%u;%u\n", x, new_angle);
-		HAL_UART_Transmit(&huart1, Buffer, strlen(Buffer), 10000);
-		//HAL_UART_Transmit(&huart1, (uint8_t *)'\n', 1, 1000);
-	}
-	power = 0;
-	enable = false;
-
-
-	while (true);
+	setAngle(phaseangle);
 }
+
 
 float getSupplyVoltage()
 {
@@ -110,16 +82,9 @@ float getSupplyVoltage()
 void setAngle(uint16_t anglesetting)
 // angle is tenths of a degree
 {
-	/*
-	if(anglesetting > sintablen)
-	{
-		anglesetting = sintablen;
-	}
-	*/
-	anglesetting = 3600 - anglesetting;
-
-	htim1.Instance->CCR1 = ((sintab[(anglesetting)      % sintablen] * power) >> 7) + 1023;
-	htim1.Instance->CCR2 = ((sintab[(anglesetting+1200) % sintablen] * power) >> 7) + 1023;
+	// thwo phases are switched !!
+	htim1.Instance->CCR2 = ((sintab[(anglesetting)      % sintablen] * power) >> 7) + 1023;
+	htim1.Instance->CCR1 = ((sintab[(anglesetting+1200) % sintablen] * power) >> 7) + 1023;
 	htim1.Instance->CCR3 = ((sintab[(anglesetting+2400) % sintablen] * power) >> 7) + 1023;
 }
 
