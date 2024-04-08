@@ -143,7 +143,8 @@ g_pfnVectors:
   .word SVC_Handler
   .word 0
   .word 0
-  .word PendSV_Handler
+  /*.word PendSV_Handler*/
+  .word scheduler_pendSV_handler /* flortos */
   .word SysTick_Handler
   .word WWDG_IRQHandler                   /* Window WatchDog              */
   .word 0                                /* reserved                     */
