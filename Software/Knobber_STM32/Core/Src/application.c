@@ -66,7 +66,7 @@ void mainloop()
 	angle = received[1] + ((uint16_t)received[0] << 8);
 
 	// map the 0-4096 from the encoder to the 0-3600 from the lookuptable
-	angle = (uint16_t)(angle*0.87890625);
+	angle = (uint16_t)(angle*0.87890625f);
 
 	setAngle(phaseangle);
 }
@@ -74,7 +74,7 @@ void mainloop()
 
 float getSupplyVoltage()
 {
-	voltage = adc_dma_results[3] / 125.27;
+	voltage = adc_dma_results[3] / 125.27f;
 	return voltage;
 }
 
