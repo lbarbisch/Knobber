@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 
 #include "application.h"
+#include "tasks.h"
 
 /* USER CODE END Includes */
 
@@ -53,7 +54,6 @@ TIM_HandleTypeDef htim1;
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -114,11 +114,10 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  init();
+  task_setup(); //start flortos
 
   while (1)
   {
-	  mainloop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
