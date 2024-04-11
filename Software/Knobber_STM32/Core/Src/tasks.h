@@ -15,6 +15,8 @@ enum {
 	TASK_IDLE = 0,
 
 	TASK_APPLICATION = 1,
+
+	TASK_BLINK = 2,
 };
 
 void task_setup();
