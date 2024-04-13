@@ -20,7 +20,7 @@ static uint8_t stack_idle[TASK_STACK_SIZE];
 static uint8_t stack_application[TASK_STACK_SIZE];
 static uint8_t stack_blink[TASK_STACK_SIZE];
 
-
+extern uint8_t _power;
 
 void task_setup()
 {
@@ -54,12 +54,8 @@ static void task_blink()
 {
 	while (1)
 	{
-		scheduler_task_sleep(1000);
-		setColor(255, 0, 0, 10);
-		scheduler_task_sleep(1000);
-		setColor(0, 255, 0, 10);
-		scheduler_task_sleep(1000);
-		setColor(0, 0, 255, 10);
+		scheduler_task_sleep(1);
+		setColor(_power, 127-_power, 0, 10);
 	}
 }
 

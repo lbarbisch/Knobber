@@ -51,7 +51,7 @@ void mainloop()
 	currentAngle = getMotorAngle();
 
 	const uint16_t deadzone = 256;
-	uint16_t localPower = abs((int16_t)currentAngle-1024)-deadzone;
+	uint16_t localPower = abs((int16_t)currentAngle-1024)-deadzone *8;
 
 	//localPower = 32;
 
