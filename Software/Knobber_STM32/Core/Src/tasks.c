@@ -38,6 +38,7 @@ static void task_idle()
 	while (1)
 	{
 		mainloop();
+		scheduler_task_sleep(1);
 	}
 }
 

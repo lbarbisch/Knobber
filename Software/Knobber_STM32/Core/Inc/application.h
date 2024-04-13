@@ -20,6 +20,7 @@
 void init();
 void mainloop();
 float getSupplyVoltage();
+uint8_t attractor(uint16_t position, uint16_t range);
 
 
 #endif /* INC_APPLICATION_H_ */

@@ -46,7 +46,7 @@ void updateMotor()
 	}
 }
 
-void setMotorPower(uint8_t power)
+void setMotorPower(uint16_t power)
 {
 	if (power > 127) power = 127;
 	_power = power;

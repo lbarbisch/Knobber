@@ -11,6 +11,8 @@ extern ADC_HandleTypeDef hadc1;
 extern UART_HandleTypeDef huart1;
 extern I2C_HandleTypeDef hi2c2;
 
+extern uint8_t _angle;
+
 volatile uint16_t currentAngle = 0;
 bool faultstate = false;
 uint8_t status = 0;
@@ -50,8 +52,13 @@ void mainloop()
 
 	currentAngle = getMotorAngle();
 
-	const uint16_t deadzone = 256;
-	uint16_t localPower = abs((int16_t)currentAngle-1024)-deadzone *8;
+	if ((attractor(1024-128, 32) + attractor(1024+128, 32)) == 0)
+	{
+		setMotorPower(0);
+	}
+	/*
+	const uint16_t deadzone = 10;
+	uint16_t localPower = abs((int16_t)currentAngle-1024)-deadzone;
 
 	//localPower = 32;
 
@@ -64,6 +71,27 @@ void mainloop()
 	else 										localPower = 0;
 
 	setMotorPower(localPower);
+	*/
+}
+
+
+uint8_t attractor(uint16_t position, uint16_t range)
+{
+	uint16_t currentAngle = getMotorAngle();
+	// check if currentAngle is within range
+	if ((currentAngle < (position + range)) & (currentAngle > (position - range)))
+	{
+		setMotorPower(abs(currentAngle - position)*4);
+		if (currentAngle > position)
+		{
+			setMotorDirection(true);
+		}
+		else if (currentAngle < position)
+		{
+			setMotorDirection(false);
+		}
+		return 1;
+	}
 }
 
 
@@ -78,6 +106,6 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
 {
 	faultstate = HAL_GPIO_ReadPin(nFAULT_GPIO_Port, nFAULT_Pin);
 
-	setMotorAngle(adc_dma_results[4]/2);
+	setMotorAngle((adc_dma_results[4]/2)*0.25 + getMotorAngle()*0.75);
 	updateMotor();
 }
