@@ -20,6 +20,7 @@
 void init();
 void mainloop();
 float getSupplyVoltage();
+void continuousIndents(uint8_t numIndents);
 uint8_t attractor(uint16_t position, uint16_t range);
 
 

@@ -17,14 +17,14 @@ void AS5600_init(I2C_HandleTypeDef hi2c, uint8_t conf_L, uint8_t conf_H)
 uint16_t AS5600_getAngle(I2C_HandleTypeDef hi2c)
 {
 	uint8_t _angle[2] = {0};
-	HAL_I2C_Mem_Read(&hi2c, AS5600_I2C_ADDR, AS5600_REG_ANGLE_H, I2C_MEMADD_SIZE_8BIT, (uint8_t *)&_angle, 2, 100);
+	HAL_I2C_Mem_Read(&hi2c, AS5600_I2C_ADDR, AS5600_REG_ANGLE, I2C_MEMADD_SIZE_8BIT, (uint8_t *)&_angle, 2, 100);
 	return _angle[1] + (((uint16_t)_angle[0] & 0x0F) << 8);
 }
 
 uint16_t AS5600_getRawAngle(I2C_HandleTypeDef hi2c)
 {
 	uint8_t _angle[2] = {0};
-	HAL_I2C_Mem_Read(&hi2c, AS5600_I2C_ADDR, AS5600_REG_RAWANGLE_H, I2C_MEMADD_SIZE_8BIT, (uint8_t *)&_angle, 2, 100);
+	HAL_I2C_Mem_Read(&hi2c, AS5600_I2C_ADDR, AS5600_REG_RAWANGLE, I2C_MEMADD_SIZE_8BIT, (uint8_t *)&_angle, 2, 100);
 	return _angle[1] + (((uint16_t)_angle[0] & 0x0F) << 8);
 }
 
@@ -38,6 +38,6 @@ uint8_t AS5600_getStatus(I2C_HandleTypeDef hi2c)
 uint16_t AS5600_getMagnitude(I2C_HandleTypeDef hi2c)
 {
 	uint8_t _magnitude[2] = {0};
-	HAL_I2C_Mem_Read(&hi2c, AS5600_I2C_ADDR, AS5600_REG_MAG_H, I2C_MEMADD_SIZE_8BIT, (uint8_t *)&_magnitude, 2, 100);
+	HAL_I2C_Mem_Read(&hi2c, AS5600_I2C_ADDR, AS5600_REG_MAG, I2C_MEMADD_SIZE_8BIT, (uint8_t *)&_magnitude, 2, 100);
 	return _magnitude[1] + (((uint16_t)_magnitude[0] & 0x0F) << 8);
 }

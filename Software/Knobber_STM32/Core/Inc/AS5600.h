@@ -15,14 +15,18 @@ static const uint8_t AS5600L_I2C_ADDR 		= 0x80;
 static const uint8_t AS5600_I2C_ADDR 		= 0x6C;
 
 // registers
-static const uint8_t AS5600_REG_CONF_H 	= 0x07;
+static const uint8_t AS5600_REG_CONF		= 0x07;
+static const uint8_t AS5600_REG_CONF_H		= 0x07;
 static const uint8_t AS5600_REG_CONF_L		= 0x08;
-static const uint8_t AS5600_REG_RAWANGLE_H = 0x0C;
-static const uint8_t AS5600_REG_RAWANGLE_L = 0x0D;
-static const uint8_t AS5600_REG_ANGLE_H	= 0x0E;
-static const uint8_t AS5600_REG_ANGLE_L	= 0x0F;
+static const uint8_t AS5600_REG_RAWANGLE	= 0x0C;
+static const uint8_t AS5600_REG_RAWANGLE_H	= 0x0C;
+static const uint8_t AS5600_REG_RAWANGLE_L	= 0x0D;
+static const uint8_t AS5600_REG_ANGLE		= 0x0E;
+static const uint8_t AS5600_REG_ANGLE_H		= 0x0E;
+static const uint8_t AS5600_REG_ANGLE_L		= 0x0F;
 static const uint8_t AS5600_REG_STATUS		= 0x0B;
-static const uint8_t AS5600_REG_AGC		= 0x1A;
+static const uint8_t AS5600_REG_AGC			= 0x1A;
+static const uint8_t AS5600_REG_MAG			= 0x1B;
 static const uint8_t AS5600_REG_MAG_H		= 0x1B;
 static const uint8_t AS5600_REG_MAG_L		= 0x1C;
 

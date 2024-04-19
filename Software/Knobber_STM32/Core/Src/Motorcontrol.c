@@ -52,6 +52,11 @@ void setMotorPower(uint16_t power)
 	_power = power;
 }
 
+uint8_t getMotorPower()
+{
+	return _power;
+}
+
 uint16_t getMotorAngle()
 {
 	return _angle;

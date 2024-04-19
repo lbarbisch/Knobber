@@ -15,6 +15,7 @@
 void initMotor();
 void updateMotor();
 void setMotorPower(uint16_t power);
+uint8_t getMotorPower();
 uint16_t getMotorAngle();
 void setMotorAngle(uint16_t angle);
 void setMotorDirection(bool direction);
