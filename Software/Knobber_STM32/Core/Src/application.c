@@ -133,8 +133,8 @@ void parseCommandandUpdate(uint8_t* buffer, uint8_t index)
 			if (buffer[1] == '?')
 			{
 				char txbuf[32] = {0};
-				_power = (unsigned int)getMotorPower();
-				_position = (signed int)getMotorPos();
+				_power = (unsigned int)getPower();
+				_position = (signed int)getPosition();
 				sprintf(txbuf, "%u_%d\n", _power, _position);
 				HAL_UART_Transmit(&huart1, (uint8_t *)txbuf, (uint16_t)strlen(txbuf), 50);
 			}

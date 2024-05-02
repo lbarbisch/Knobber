@@ -11,23 +11,7 @@ extern TIM_HandleTypeDef htim1;
 extern ADC_HandleTypeDef hadc1;
 extern I2C_HandleTypeDef hi2c2;
 
-static control_state_type motorcontroller_mode = TORQUE_MODE;
-static uint8_t power = 0;
-static uint8_t power_limit = 127;
-static uint16_t old_angle = 0;
-static uint16_t encoder_offset = 6;
-//static const int32_t arm_offset = 160; // linke Motor
-static const int32_t arm_offset = 200; // rechte Motor
-static int32_t position = arm_offset;
-static int32_t target = 0;
-static bool direction = 0;
-static bool calibration = 0;
-static uint8_t as5600_angle[2] = {0};
-
-static uint16_t angle = 0;
-
-static const uint16_t angle_cw  = (2048/7)/4;
-static const uint16_t angle_ccw = (2048/7)/4*3;
+static Controller moco;
 
 static inline uint16_t max(uint16_t value, uint16_t limit)
 {
@@ -36,155 +20,162 @@ static inline uint16_t max(uint16_t value, uint16_t limit)
 	return value;
 }
 
+static inline float limit(float input, float min, float max)
+{
+	if (input > max)
+		return max;
+	if (input < min)
+		return min;
+	return input;
+}
+
+void initMotorControl()
+{
+	// initialize AS5600 encoder
+	AS5600_init(&hi2c2, AS5600_CONF_L_HYST_OFF | AS5600_CONF_L_OUTS_AN | AS5600_CONF_L_PM_NOM | AS5600_CONF_L_PWMF_115, AS5600_CONF_H_FTH_SLOW | AS5600_CONF_H_SF_2x | AS5600_CONF_L_HYST_OFF);
+	moco.mode = POSITION_MODE;
+	moco.encoder_offset = 6;
+	moco.arm_offset = 200;
+	moco.angle_cw = (2048/7)/4;
+	moco.angle_ccw = (2048/7)/4*3;
+	moco.phase_offset1 = 0;			// 2048 / 7 / 3 * 0
+	moco.phase_offset2 = 98;		// 2048 / 7 / 3 * 1
+	moco.phase_offset3 = 195;		// 2048 / 7 / 3 * 2
+	moco.power = 0;
+	moco.power_limit = 127;
+	moco.position = moco.arm_offset;
+	moco.target = 0;
+	moco.direction = 0;
+	moco.meas_angle = 0;
+	moco.old_angle = 0;
+	moco.angle_error = 0;
+	moco.Kp = 2.0f;
+	moco.Ki = 0.005f;
+	moco.Kd = 100.0f;
+	moco.calibration = 0;
+	moco.as5600_i2c_angle[0] = 0;
+	moco.as5600_i2c_angle[1] = 0;
+}
+
 void update()
 {
-	HAL_I2C_Mem_Read_IT(&hi2c2, AS5600_I2C_ADDR, AS5600_REG_RAWANGLE, I2C_MEMADD_SIZE_8BIT, (uint8_t*)as5600_angle, 2);
-}
-
-void updatePosition(uint16_t angle_meas)
-{
-	// determine direction and power
-	int32_t diff_pos = (target - position);
-	if (diff_pos > 0)
-	{
-		// must rotate cw to reach target
-		direction = 0;
-	}
-	if (diff_pos < 0)
-	{
-		// must rotate ccw to reach target
-		direction = 1;
-	}
-
-	power = max(abs(diff_pos), power_limit);
-
-	updateTorque(angle_meas);
-}
-
-void updateTorque(uint16_t angle_meas)
-{
-	// update global position and handle rotational overflow (2047->0 or 0->2047)
-	int16_t diff_angle = (angle_meas - old_angle);
-
-	// border setting must be chosen according the update rate and the max expected rpm
-	const uint16_t border = 100;
-	if (old_angle < border)
-	{
-		// old_angle was slightly above 0
-		if (angle_meas > (2047-border))
-		{
-			// new angle was slightly below 2047
-			// UNDERFLOW must have happened
-			position = position - 2047;
-		}
-	}
-	else if (old_angle > (2048-border))
-	{
-		// old_angle was slightly below 2047
-		if (angle_meas < border)
-		{
-			// new angle was slightly above 0
-			// OVERFLOW must have happened
-			position = position + 2048;
-		}
-	}
-	position = position + diff_angle;
-
-	old_angle = angle_meas;
-
-	if (calibration)
-	{
-		if (direction)
-		{
-			// thwo phases are switched !!
-			htim1.Instance->CCR2 = ((sintab[(angle_meas+encoder_offset)     % sintablen] * (uint16_t)power) >> 7) + 1023;
-			htim1.Instance->CCR1 = ((sintab[(angle_meas+encoder_offset+98)  % sintablen] * (uint16_t)power) >> 7) + 1023;
-			htim1.Instance->CCR3 = ((sintab[(angle_meas+encoder_offset+195) % sintablen] * (uint16_t)power) >> 7) + 1023;
-		}
-		else
-		{
-			// thwo phases are switched !!
-			htim1.Instance->CCR2 = ((sintab[(angle_meas+encoder_offset)     % sintablen] * (uint16_t)power) >> 7) + 1023;
-			htim1.Instance->CCR1 = ((sintab[(angle_meas+encoder_offset+98)  % sintablen] * (uint16_t)power) >> 7) + 1023;
-			htim1.Instance->CCR3 = ((sintab[(angle_meas+encoder_offset+195) % sintablen] * (uint16_t)power) >> 7) + 1023;
-		}
-	}
-	else
-	{
-		if (direction)
-		{
-			// thwo phases are switched !!
-			htim1.Instance->CCR2 = ((sintab[(angle_meas+encoder_offset+angle_cw)     % sintablen] * (uint16_t)power) >> 7) + 1023;
-			htim1.Instance->CCR1 = ((sintab[(angle_meas+encoder_offset+angle_cw+98)  % sintablen] * (uint16_t)power) >> 7) + 1023;
-			htim1.Instance->CCR3 = ((sintab[(angle_meas+encoder_offset+angle_cw+195) % sintablen] * (uint16_t)power) >> 7) + 1023;
-		}
-		else
-		{
-			// thwo phases are switched !!
-			htim1.Instance->CCR2 = ((sintab[(angle_meas+encoder_offset+angle_ccw)     % sintablen] * (uint16_t)power) >> 7) + 1023;
-			htim1.Instance->CCR1 = ((sintab[(angle_meas+encoder_offset+angle_ccw+98)  % sintablen] * (uint16_t)power) >> 7) + 1023;
-			htim1.Instance->CCR3 = ((sintab[(angle_meas+encoder_offset+angle_ccw+195) % sintablen] * (uint16_t)power) >> 7) + 1023;
-		}
-	}
-}
-
-void setMode(control_state_type mode)
-{
-	motorcontroller_mode = mode;
-}
-
-control_state_type getMode()
-{
-	return motorcontroller_mode;
+	HAL_I2C_Mem_Read_IT(&hi2c2, AS5600_I2C_ADDR, AS5600_REG_RAWANGLE, I2C_MEMADD_SIZE_8BIT, (uint8_t*)moco.as5600_i2c_angle, 2);
 }
 
 void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *I2cHandle)
 {
 	__HAL_I2C_CLEAR_FLAG(I2cHandle, I2C_FLAG_RXNE);
-	angle = (as5600_angle[1] + (((uint16_t)as5600_angle[0] & 0x0F) << 8))/2;
-	//uint16_t angle = as5600_angle/2;
+	moco.meas_angle = (moco.as5600_i2c_angle[1] + (((uint16_t)moco.as5600_i2c_angle[0] & 0x0F) << 8))/2;
+	//uint16_t angle = as5600_i2c_angle/2;
 
-	if (motorcontroller_mode == TORQUE_MODE)
+	if (moco.mode == TORQUE_MODE)
 	{
-		updateTorque(angle);
+		updateTorque();
 	}
-	else if (motorcontroller_mode == POSITION_MODE)
+	else if (moco.mode == POSITION_MODE)
 	{
-		updatePosition(angle);
+		updatePosition();
 	}
 }
 
-void calibrateOffset(uint8_t calibration_power)
+float proportional;
+float integral;
+float differential;
+
+void updatePosition()
 {
-	calibration = 1;
-	uint16_t angle = 0;
-	power = calibration_power;
+	// determine direction and power
+	moco.position_error = (moco.target - moco.position);
 
-	while (AS5600_getRawAngle(&hi2c2) > 2048/7)
-	{
-		angle += 5;
-		updatePosition(angle);
-		HAL_Delay(100);
-	}
-	updatePosition(0);
-	HAL_Delay(200);
+	proportional 	 = moco.Kp * moco.position_error;
+	moco.integrator	 = limit(moco.integrator + moco.Ki * moco.position_error, -100.0f, 100.0f);
+	integral 		 = moco.integrator + moco.Ki * moco.position_error;
+	differential 	 = moco.Kd * (moco.position_error - moco.old_position_error);
 
-	encoder_offset = 0;
-	for (uint8_t i = 0; i < (1 << 4); i++)
+	float power = proportional + integral + differential;
+
+	if (power > 0)
 	{
-		encoder_offset += AS5600_getRawAngle(&hi2c2);
+		moco.direction = 0;
 	}
-	power = 0;
-	updatePosition(0);
-	encoder_offset = encoder_offset >> 4;
-	calibration = 0;
-	//position = encoder_offset;
-	target = 0;
+	else
+	{
+		moco.direction = 1;
+	}
+
+	moco.power = max((uint16_t)abs(proportional + integral + differential), moco.power_limit);
+	moco.old_position_error = moco.position_error;
+
+	//moco.power = max(abs(moco.position_error), moco.power_limit);
+
+	updateTorque(moco.meas_angle);
 }
 
-uint8_t getMotorPower()
+void updateTorque()
 {
-	return power;
+	// update global position and handle rotational overflow (2047.0 or 0.2047)
+	moco.angle_error = (moco.meas_angle - moco.old_angle);
+
+	// border setting must be chosen according the update rate and the max expected rpm
+	const uint16_t border = 100;
+	if (moco.old_angle < border)
+	{
+		// old_angle was slightly above 0
+		if (moco.meas_angle > (2047-border))
+		{
+			// new angle was slightly below 2047
+			// UNDERFLOW must have happened
+			moco.position = moco.position - 2047;
+		}
+	}
+	else if (moco.old_angle > (2048-border))
+	{
+		// old_angle was slightly below 2047
+		if (moco.meas_angle < border)
+		{
+			// new angle was slightly above 0
+			// OVERFLOW must have happened
+			moco.position = moco.position + 2048;
+		}
+	}
+	moco.position = moco.position + moco.angle_error;
+
+	moco.old_angle = moco.meas_angle;
+
+	if (moco.calibration)
+	{
+		if (moco.direction)
+		{
+			// thwo phases are switched !!
+			htim1.Instance->CCR2 = ((sintab[(moco.meas_angle + moco.encoder_offset + moco.phase_offset1) % sintablen] * (uint16_t)moco.power) >> 7) + 1023;
+			htim1.Instance->CCR1 = ((sintab[(moco.meas_angle + moco.encoder_offset + moco.phase_offset2) % sintablen] * (uint16_t)moco.power) >> 7) + 1023;
+			htim1.Instance->CCR3 = ((sintab[(moco.meas_angle + moco.encoder_offset + moco.phase_offset3) % sintablen] * (uint16_t)moco.power) >> 7) + 1023;
+		}
+		else
+		{
+			// thwo phases are switched !!
+			htim1.Instance->CCR2 = ((sintab[(moco.meas_angle + moco.encoder_offset + moco.phase_offset1) % sintablen] * (uint16_t)moco.power) >> 7) + 1023;
+			htim1.Instance->CCR1 = ((sintab[(moco.meas_angle + moco.encoder_offset + moco.phase_offset2) % sintablen] * (uint16_t)moco.power) >> 7) + 1023;
+			htim1.Instance->CCR3 = ((sintab[(moco.meas_angle + moco.encoder_offset + moco.phase_offset3) % sintablen] * (uint16_t)moco.power) >> 7) + 1023;
+		}
+	}
+	else
+	{
+		if (moco.direction)
+		{
+			// thwo phases are switched !!
+			htim1.Instance->CCR2 = ((sintab[(moco.meas_angle + moco.encoder_offset + moco.angle_cw + moco.phase_offset1) % sintablen] * (uint16_t)moco.power) >> 7) + 1023;
+			htim1.Instance->CCR1 = ((sintab[(moco.meas_angle + moco.encoder_offset + moco.angle_cw + moco.phase_offset2) % sintablen] * (uint16_t)moco.power) >> 7) + 1023;
+			htim1.Instance->CCR3 = ((sintab[(moco.meas_angle + moco.encoder_offset + moco.angle_cw + moco.phase_offset3) % sintablen] * (uint16_t)moco.power) >> 7) + 1023;
+		}
+		else
+		{
+			// thwo phases are switched !!
+			htim1.Instance->CCR2 = ((sintab[(moco.meas_angle + moco.encoder_offset + moco.angle_ccw + moco.phase_offset1) % sintablen] * (uint16_t)moco.power) >> 7) + 1023;
+			htim1.Instance->CCR1 = ((sintab[(moco.meas_angle + moco.encoder_offset + moco.angle_ccw + moco.phase_offset2) % sintablen] * (uint16_t)moco.power) >> 7) + 1023;
+			htim1.Instance->CCR3 = ((sintab[(moco.meas_angle + moco.encoder_offset + moco.angle_ccw + moco.phase_offset3) % sintablen] * (uint16_t)moco.power) >> 7) + 1023;
+		}
+	}
 }
 
 void enableMotor()
@@ -206,33 +197,70 @@ void enableMotor()
 	HAL_GPIO_WritePin(nSLEEP_GPIO_Port, nSLEEP_Pin, GPIO_PIN_SET);
 }
 
-void initMotorControl()
+void calibrateOffset(uint8_t calibration_power)
 {
-	// initialize AS5600 encoder
-	AS5600_init(&hi2c2, AS5600_CONF_L_HYST_OFF | AS5600_CONF_L_OUTS_AN | AS5600_CONF_L_PM_NOM | AS5600_CONF_L_PWMF_115, AS5600_CONF_H_FTH_SLOW | AS5600_CONF_H_SF_2x | AS5600_CONF_L_HYST_OFF);
+	moco.calibration = 1;
+	uint16_t angle = 0;
+	moco.power = calibration_power;
+
+	while (AS5600_getRawAngle(&hi2c2) > 2048/7)
+	{
+		angle += 5;
+		updatePosition(angle);
+		HAL_Delay(100);
+	}
+	updatePosition(0);
+	HAL_Delay(200);
+
+	moco.encoder_offset = 0;
+	for (uint8_t i = 0; i < (1 << 4); i++)
+	{
+		moco.encoder_offset += AS5600_getRawAngle(&hi2c2);
+	}
+	moco.power = 0;
+	updatePosition(0);
+	moco.encoder_offset = moco.encoder_offset >> 4;
+	moco.calibration = 0;
+	//position = encoder_offset;
+	moco.target = 0;
 }
 
-void setDirection(bool _direction)
+void setMode(control_state_type mode)
 {
-	direction = _direction;
+	moco.mode = mode;
 }
 
-void setPowerLimit(uint8_t _power_limit)
+control_state_type getMode()
 {
-	power_limit = _power_limit;
+	return moco.mode;
 }
 
-void setPower(uint8_t _power)
+uint8_t getPower()
 {
-	power = _power;
+	return moco.power;
 }
 
-void setTarget(uint32_t _target)
+void setDirection(bool direction)
 {
-	target = _target;
+	moco.direction = direction;
 }
 
-int32_t getMotorPos()
+void setPowerLimit(uint8_t power_limit)
 {
-	return position;
+	moco.power_limit = power_limit;
+}
+
+void setPower(uint8_t power)
+{
+	moco.power = power;
+}
+
+void setTarget(uint32_t target)
+{
+	moco.target = target;
+}
+
+int32_t getPosition()
+{
+	return moco.position;
 }
