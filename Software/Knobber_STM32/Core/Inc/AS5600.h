@@ -63,11 +63,11 @@ static const uint8_t AS5600_STATUS_MD			= 1 << 5;
 static const uint8_t AS5600_STATUS_ML			= 1 << 4;
 static const uint8_t AS5600_STATUS_MH			= 1 << 3;
 
-void AS5600_init(I2C_HandleTypeDef hi2c, uint8_t conf_L, uint8_t conf_H);
-uint16_t AS5600_getAngle(I2C_HandleTypeDef hi2c);
-uint16_t AS5600_getRawAngle(I2C_HandleTypeDef hi2c);
-uint8_t AS5600_getStatus(I2C_HandleTypeDef hi2c);
-uint16_t AS5600_getMagnitude(I2C_HandleTypeDef hi2c);
+void AS5600_init(I2C_HandleTypeDef *hi2c, uint8_t conf_L, uint8_t conf_H);
+uint16_t AS5600_getAngle(I2C_HandleTypeDef *hi2c);
+uint16_t AS5600_getRawAngle(I2C_HandleTypeDef *hi2c);
+uint8_t AS5600_getStatus(I2C_HandleTypeDef *hi2c);
+uint16_t AS5600_getMagnitude(I2C_HandleTypeDef *hi2c);
 
 
 #endif /* INC_AS5600_H_ */

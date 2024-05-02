@@ -8,6 +8,7 @@
 #include "AP102_Driver.h"
 
 void setColor(uint8_t red, uint8_t green, uint8_t blue, uint8_t brightness)
+// max brightness is 31
 {
   for (int i = 0; i<32; i++)
   {
