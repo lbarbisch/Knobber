@@ -11,7 +11,7 @@ extern TIM_HandleTypeDef htim1;
 extern ADC_HandleTypeDef hadc1;
 extern I2C_HandleTypeDef hi2c2;
 
-static Controller moco;
+Controller moco;
 
 static inline uint16_t max(uint16_t value, uint16_t limit)
 {
@@ -49,8 +49,8 @@ void initMotorControl()
 	moco.meas_angle = 0;
 	moco.old_angle = 0;
 	moco.angle_error = 0;
-	moco.Kp = 2.0f;
-	moco.Ki = 0.005f;
+	moco.Kp = 4.0f;
+	moco.Ki = 0.05f;
 	moco.Kd = 100.0f;
 	moco.calibration = 0;
 	moco.as5600_i2c_angle[0] = 0;
@@ -90,7 +90,7 @@ void updatePosition()
 	proportional 	 = moco.Kp * moco.position_error;
 	moco.integrator	 = limit(moco.integrator + moco.Ki * moco.position_error, -100.0f, 100.0f);
 	integral 		 = moco.integrator + moco.Ki * moco.position_error;
-	differential 	 = moco.Kd * (moco.position_error - moco.old_position_error);
+	differential 	 = 0.9 * differential + 0.1 * moco.Kd * (moco.position_error - moco.old_position_error);
 
 	float power = proportional + integral + differential;
 

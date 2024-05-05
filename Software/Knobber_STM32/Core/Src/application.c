@@ -14,6 +14,7 @@ extern ADC_HandleTypeDef hadc1;
 extern I2C_HandleTypeDef hi2c2;
 
 float voltage = 0;
+extern Controller moco;
 
 uint8_t rxbuf[64] = {0};
 uint8_t rxchar;
@@ -44,6 +45,8 @@ void init()
 	//calibrateOffset(64);
 }
 
+uint32_t timer = 0;
+
 void mainloop()
 {
 	update();
@@ -54,6 +57,17 @@ void mainloop()
 		task = 0;
 	}
 	getPhaseCurrents(current);
+
+	//char txbuf[24] = {0};
+	//sprintf(txbuf, "%d\n", moco.position);
+	//HAL_UART_Transmit(&huart1, txbuf, strlen(txbuf), 50);
+
+	//if (HAL_GetTick() > timer+500)
+	//{
+	//	if (moco.target == 0) moco.target = 200;
+	//	else if (moco.target == 200) moco.target = 0;
+	//	timer = HAL_GetTick();
+	//}
 }
 
 float getSupplyVoltage()
