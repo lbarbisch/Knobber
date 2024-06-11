@@ -49,9 +49,9 @@ void initMotorControl()
 	moco.meas_angle = 0;
 	moco.old_angle = 0;
 	moco.angle_error = 0;
-	moco.Kp = 4.0f;
+	moco.Kp = 8.0f;
 	moco.Ki = 0.05f;
-	moco.Kd = 100.0f;
+	moco.Kd = 75.0f;
 	moco.calibration = 0;
 	moco.as5600_i2c_angle[0] = 0;
 	moco.as5600_i2c_angle[1] = 0;

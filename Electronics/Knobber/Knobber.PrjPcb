@@ -54,7 +54,7 @@ ReleaseFolderPath=[OutputPath]\Release_[Revision]
 ReleaseZipPath=[OutputPath][ProjectName].zip
 
 [Document1]
-DocumentPath=..\..\Altium Library\Global Library.PcbLib
+DocumentPath=..\..\..\..\CAE\Altium\Altium Library\Global Library.PcbLib
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -68,10 +68,10 @@ ClassGenCCAutoRoomEnabled=0
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=BXMFRWVQ
+DocumentUniqueId=
 
 [Document2]
-DocumentPath=..\..\Altium Library\Global Library.SchLib
+DocumentPath=..\..\..\..\CAE\Altium\Altium Library\Global Library.SchLib
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -85,7 +85,7 @@ ClassGenCCAutoRoomEnabled=0
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=XURISNAD
+DocumentUniqueId=
 
 [Document3]
 DocumentPath=Knobber.PcbDoc
@@ -231,88 +231,84 @@ DocumentPath=Project Outputs for Knobber\Design Rule Check - Knobber.html
 DItemRevisionGUID=
 
 [Parameter1]
-Name=Schematic_Title
-Value=Knobber
-
-[Parameter2]
-Name=Schematic_Revision
-Value=A00
-
-[Parameter3]
-Name=Schematic_DrawnDate
-Value=24.03.2024
-
-[Parameter4]
-Name=Schematic_DrawnBy
-Value=L. Barbisch
-
-[Parameter5]
-Name=Schematic_DocumentNo
-Value=XXXXXXXX
-
-[Parameter6]
-Name=Schematic_CheckedDate
-Value=dd.mm.yyyy
-
-[Parameter7]
-Name=Schematic_CheckedBy
-Value=C. Sch Checker
-
-[Parameter8]
-Name=Revision
-Value=A00
-
-[Parameter9]
-Name=Project
-Value=Knobber
-
-[Parameter10]
-Name=PCB_TP_Revision
-Value=A
-
-[Parameter11]
-Name=PCB_TP_DocumentNo
-Value=XXXXXXXX
-
-[Parameter12]
-Name=PCB_Title
-Value=Knobber
-
-[Parameter13]
-Name=PCB_Revision
-Value=A
-
-[Parameter14]
-Name=PCB_PartNo
-Value=XXX.XXXX
-
-[Parameter15]
-Name=PCB_DrawnDate
-Value=dd.mm.yyyy
-
-[Parameter16]
-Name=PCB_DrawnBy
-Value=D. Designer
-
-[Parameter17]
-Name=PCB_CheckedDate
-Value=dd.mm.yyyy
-
-[Parameter18]
-Name=PCB_CheckedBy
-Value=C. PCB Checker
-
-[Parameter19]
-Name=PCB_Assy_DrawnDate
-Value=dd.mm.yyyy
-
-[Parameter20]
 Name=PCB_Assy_DrawnBy
 Value=A. P. Assy
 
-[Parameter21]
-Name=
-Value=
+[Parameter2]
+Name=PCB_Assy_DrawnDate
+Value=dd.mm.yyyy
+
+[Parameter3]
+Name=PCB_CheckedBy
+Value=C. PCB Checker
+
+[Parameter4]
+Name=PCB_CheckedDate
+Value=dd.mm.yyyy
+
+[Parameter5]
+Name=PCB_DrawnBy
+Value=D. Designer
+
+[Parameter6]
+Name=PCB_DrawnDate
+Value=dd.mm.yyyy
+
+[Parameter7]
+Name=PCB_PartNo
+Value=XXX.XXXX
+
+[Parameter8]
+Name=PCB_Revision
+Value=A
+
+[Parameter9]
+Name=PCB_Title
+Value=Knobber
+
+[Parameter10]
+Name=PCB_TP_DocumentNo
+Value=XXXXXXXX
+
+[Parameter11]
+Name=PCB_TP_Revision
+Value=A
+
+[Parameter12]
+Name=Project
+Value=Knobber
+
+[Parameter13]
+Name=Revision
+Value=A00
+
+[Parameter14]
+Name=Schematic_CheckedBy
+Value=C. Sch Checker
+
+[Parameter15]
+Name=Schematic_CheckedDate
+Value=dd.mm.yyyy
+
+[Parameter16]
+Name=Schematic_DocumentNo
+Value=XXXXXXXX
+
+[Parameter17]
+Name=Schematic_DrawnBy
+Value=L. Barbisch
+
+[Parameter18]
+Name=Schematic_DrawnDate
+Value=24.03.2024
+
+[Parameter19]
+Name=Schematic_Revision
+Value=A00
+
+[Parameter20]
+Name=Schematic_Title
+Value=Knobber
 
 [Configuration1]
 Name=Project Files
@@ -950,36 +946,6 @@ OutputName12=Web Review Data
 OutputDocumentPath12=
 OutputVariantName12=
 OutputDefault12=0
-OutputType13=Ansoft Neutral
-OutputName13=Ansoft Neutral (AutoPCB)
-OutputDocumentPath13=
-OutputVariantName13=
-OutputDefault13=0
-OutputType14=HyperLynx
-OutputName14=HyperLynx (AutoPCB)
-OutputDocumentPath14=
-OutputVariantName14=
-OutputDefault14=0
-OutputType15=Orcad v7 Capture Design
-OutputName15=Orcad v7 Capture Design (AutoSCH)
-OutputDocumentPath15=
-OutputVariantName15=
-OutputDefault15=0
-OutputType16=P-CAD ASCII
-OutputName16=P-CAD ASCII (AutoPCB)
-OutputDocumentPath16=
-OutputVariantName16=
-OutputDefault16=0
-OutputType17=P-CAD V16 Schematic Design
-OutputName17=P-CAD V16 Schematic Design (AutoSCH)
-OutputDocumentPath17=
-OutputVariantName17=
-OutputDefault17=0
-OutputType18=SiSoft
-OutputName18=SiSoft (AutoPCB)
-OutputDocumentPath18=
-OutputVariantName18=
-OutputDefault18=0
 
 [OutputGroup10]
 Name=PostProcess Outputs

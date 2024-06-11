@@ -25,6 +25,8 @@ uint16_t adc_curr_idle[3];
 float current[3];
 
 uint8_t task = 0;
+uint8_t ran = 0;
+uint32_t ran_ticks = 50;
 
 
 void init()
@@ -41,7 +43,13 @@ void init()
 
 	enableMotor();
 
+
 	initMotorControl();
+
+	if (moco.position > 2048/2)
+	{
+		moco.position += 2048;
+	}
 	//calibrateOffset(64);
 }
 
@@ -57,6 +65,15 @@ void mainloop()
 		task = 0;
 	}
 	getPhaseCurrents(current);
+
+	if ((HAL_GetTick() > ran_ticks) & (ran == 0))
+	{
+		ran = 1;
+		if (moco.position > 2048/2)
+		{
+			moco.position -= 2048;
+		}
+	}
 
 	//char txbuf[24] = {0};
 	//sprintf(txbuf, "%d\n", moco.position);
@@ -82,9 +99,9 @@ void getPhaseCurrents(float* _current)
 	_current[2] = _current[2] * 0.9 + 0.1 * ((float)adc_dma_results[2] - (float)adc_curr_idle[2]) * 0.64453125f;
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart1)
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	__HAL_UART_CLEAR_FLAG(huart1, 0xFF);
+	__HAL_UART_CLEAR_FLAG(huart, 0xFF);
 	if(rxbuf_index < 20)
 	{
 		rxbuf[rxbuf_index] = rxchar;
