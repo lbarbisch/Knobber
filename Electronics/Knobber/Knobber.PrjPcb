@@ -212,11 +212,8 @@ DocumentUniqueId=
 UniqueId=873E8F09-4BF2-420F-A642-D92220AFBA1F
 Description=951.xxxx
 AllowFabrication=0
-ParameterCount=3
-VariationCount=3
-Variation1=Designator=R?|UniqueId=\FWYXBKWG|Kind=1|AlternatePart=
-Variation2=Designator=R?|UniqueId=\DVISDYQR|Kind=1|AlternatePart=
-Variation3=Designator=R?|UniqueId=\NBCCSGXG|Kind=1|AlternatePart=
+ParameterCount=4
+VariationCount=0
 ParamVariationCount=0
 
 [Parameter2_1]
@@ -229,7 +226,11 @@ Value=951.xxxx
 
 [Parameter2_3]
 Name=_VariantRevision
-Value=A
+Value=B
+
+[Parameter2_4]
+Name=
+Value=
 
 [GeneratedDocument1]
 DocumentPath=Project Outputs for Knobber\Design Rule Check - Knobber.html
@@ -245,7 +246,7 @@ Value=B00
 
 [Parameter3]
 Name=Schematic_DrawnDate
-Value=24.03.2024
+Value=23.02.2025
 
 [Parameter4]
 Name=Schematic_DrawnBy
@@ -257,7 +258,7 @@ Value=XXXXXXXX
 
 [Parameter6]
 Name=Schematic_CheckedDate
-Value=dd.mm.yyyy
+Value=23.02.2025
 
 [Parameter7]
 Name=Schematic_CheckedBy
@@ -265,7 +266,7 @@ Value=L. Barbisch
 
 [Parameter8]
 Name=Revision
-Value=A00
+Value=B00
 
 [Parameter9]
 Name=Project
@@ -301,7 +302,7 @@ Value=L. Barbisch
 
 [Parameter17]
 Name=PCB_CheckedDate
-Value=dd.mm.yyyy
+Value=23.02.2025
 
 [Parameter18]
 Name=PCB_CheckedBy
@@ -309,7 +310,7 @@ Value=L. Barbisch
 
 [Parameter19]
 Name=PCB_Assy_DrawnDate
-Value=dd.mm.yyyy
+Value=23.02.2025
 
 [Parameter20]
 Name=PCB_Assy_DrawnBy

@@ -1,0 +1,18 @@
+----------------------------------------------------------------------------------------------------------------------------------
+NCDrill File Report For: Knobber.PcbDoc   23.02.2025  14:03:48
+----------------------------------------------------------------------------------------------------------------------------------
+
+Layer Pair : Top Layer to Bottom Layer
+ASCII RoundHoles File : XXX.XXXXB_Knobber-RoundHoles.TXT
+ASCII SlotHoles File : XXX.XXXXB_Knobber-SlotHoles.TXT
+
+Tool       Hole Size               Hole Tolerance               Hole Type       Hole Count   Plated         Tool Travel
+----------------------------------------------------------------------------------------------------------------------------------
+T1      0.3mm (12mil)                                             Round             77        PTH        156.31mm (6.15inch)
+T2      0.6mm (24mil)                                             Slot              4         PTH        43.35mm (1.71inch)
+T3      1.1mm (43mil)                                             Round             6         PTH        25.93mm (1.02inch)
+T4      3mm (118mil)                                              Round             3         NPTH       42.70mm (1.68inch)
+----------------------------------------------------------------------------------------------------------------------------------
+Totals                                                                              90
+
+Total Processing Time (hh:mm:ss) : 00:00:00

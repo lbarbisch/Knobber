@@ -15,13 +15,13 @@ LifeCycleDefinitionGUID=
 RevisionNamingSchemeGUID=
 
 [OutputGroup1]
-Name=Job Group
+Name=Knobber_Validation.OutJob
 Description=
 TargetOutputMedium=Reports
 VariantName=[No Variations]
 VariantScope=1
 CurrentConfigurationName=
-TargetPrinter=\\chmesrvprt2001\CHLAPRT0013
+TargetPrinter=Brother DCP-1610W series Printer
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=0
 OutputMedium1=Reports
 OutputMedium1_Type=GeneratedFiles
@@ -46,7 +46,7 @@ OutputEnabled2_OutputMedium1=2
 OutputDefault2=0
 PageOptions2=Record=PageOptions|CenterHorizontal=True|CenterVertical=True|PrintScale=1.00|XCorrection=1.00|YCorrection=1.00|PrintKind=0|BorderSize=5000000|LeftOffset=0|BottomOffset=0|Orientation=1|PaperLength=1000|PaperWidth=1000|Scale=100|PaperSource=7|PrintQuality=-4|MediaType=1|DitherType=10|PrintScaleMode=1|PaperKind=A4|PaperIndex=9
 Configuration2_Name1=OutputConfigurationParameter1
-Configuration2_Item1=DifferenceLevel1=1|DifferenceLevel10=1|DifferenceLevel11=1|DifferenceLevel12=1|DifferenceLevel13=1|DifferenceLevel14=1|DifferenceLevel15=1|DifferenceLevel16=1|DifferenceLevel17=1|DifferenceLevel18=1|DifferenceLevel19=1|DifferenceLevel2=1|DifferenceLevel20=1|DifferenceLevel21=1|DifferenceLevel22=1|DifferenceLevel23=1|DifferenceLevel24=1|DifferenceLevel25=1|DifferenceLevel26=1|DifferenceLevel27=1|DifferenceLevel28=1|DifferenceLevel29=1|DifferenceLevel3=1|DifferenceLevel30=1|DifferenceLevel31=1|DifferenceLevel32=1|DifferenceLevel33=1|DifferenceLevel34=1|DifferenceLevel35=1|DifferenceLevel36=1|DifferenceLevel37=1|DifferenceLevel38=1|DifferenceLevel39=1|DifferenceLevel4=0|DifferenceLevel40=1|DifferenceLevel41=1|DifferenceLevel42=1|DifferenceLevel43=1|DifferenceLevel44=1|DifferenceLevel45=1|DifferenceLevel5=0|DifferenceLevel6=0|DifferenceLevel7=1|DifferenceLevel8=1|DifferenceLevel9=0|Record=DiffReportView
+Configuration2_Item1=DifferenceLevel1=1|DifferenceLevel10=1|DifferenceLevel11=1|DifferenceLevel12=1|DifferenceLevel13=1|DifferenceLevel14=1|DifferenceLevel15=1|DifferenceLevel16=1|DifferenceLevel17=1|DifferenceLevel18=1|DifferenceLevel19=0|DifferenceLevel2=1|DifferenceLevel20=1|DifferenceLevel21=1|DifferenceLevel22=1|DifferenceLevel23=1|DifferenceLevel24=1|DifferenceLevel25=1|DifferenceLevel26=1|DifferenceLevel27=1|DifferenceLevel28=1|DifferenceLevel29=1|DifferenceLevel3=1|DifferenceLevel30=1|DifferenceLevel31=1|DifferenceLevel32=1|DifferenceLevel33=1|DifferenceLevel34=1|DifferenceLevel35=1|DifferenceLevel36=1|DifferenceLevel37=1|DifferenceLevel38=1|DifferenceLevel39=1|DifferenceLevel4=0|DifferenceLevel40=1|DifferenceLevel41=1|DifferenceLevel42=1|DifferenceLevel43=1|DifferenceLevel44=1|DifferenceLevel45=1|DifferenceLevel46=1|DifferenceLevel47=1|DifferenceLevel48=1|DifferenceLevel49=1|DifferenceLevel5=0|DifferenceLevel50=1|DifferenceLevel51=1|DifferenceLevel52=1|DifferenceLevel53=1|DifferenceLevel54=1|DifferenceLevel55=1|DifferenceLevel56=1|DifferenceLevel57=1|DifferenceLevel58=1|DifferenceLevel59=1|DifferenceLevel6=0|DifferenceLevel60=1|DifferenceLevel61=1|DifferenceLevel62=1|DifferenceLevel63=1|DifferenceLevel64=1|DifferenceLevel65=1|DifferenceLevel66=1|DifferenceLevel67=1|DifferenceLevel68=1|DifferenceLevel69=1|DifferenceLevel7=1|DifferenceLevel70=1|DifferenceLevel71=1|DifferenceLevel72=1|DifferenceLevel73=1|DifferenceLevel74=1|DifferenceLevel75=1|DifferenceLevel76=1|DifferenceLevel77=1|DifferenceLevel78=1|DifferenceLevel79=1|DifferenceLevel8=1|DifferenceLevel80=1|DifferenceLevel81=1|DifferenceLevel82=1|DifferenceLevel9=0|Record=DiffReportView|DocumentPath=Z:\Datastorrage\Projects\Knobber\Electronics\Knobber\Knobber.PcbDoc
 OutputType3=Electrical Rules Check
 OutputName3=Electrical Rules Check
 OutputCategory3=Validation
@@ -62,7 +62,7 @@ Configuration3_Item1=ERCClassColumnOrder=0|ERCClassColumnSort=0|ERCClassColumnVi
 [PublishSettings]
 OutputFilePath1=Project Outputs for Free Documents\
 ReleaseManaged1=1
-OutputBasePath1=Project Outputs for ProjectTemplate-GPV
+OutputBasePath1=Project Outputs for Knobber
 OutputPathMedia1=
 OutputPathMediaValue1=Reports
 OutputPathOutputer1=[Output Type]
