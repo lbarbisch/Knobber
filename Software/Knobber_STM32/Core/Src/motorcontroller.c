@@ -34,7 +34,7 @@ void initMotorControl()
 	// initialize AS5600 encoder
 	AS5600_init(&hi2c2, AS5600_CONF_L_HYST_OFF | AS5600_CONF_L_OUTS_AN | AS5600_CONF_L_PM_NOM | AS5600_CONF_L_PWMF_115, AS5600_CONF_H_FTH_SLOW | AS5600_CONF_H_SF_2x | AS5600_CONF_L_HYST_OFF);
 	moco.mode = POSITION_MODE;
-	moco.encoder_offset = 6;
+	moco.encoder_offset = 325;
 	moco.arm_offset = 200;
 	moco.angle_cw = (2048/7)/4;
 	moco.angle_ccw = (2048/7)/4*3;
@@ -43,13 +43,14 @@ void initMotorControl()
 	moco.phase_offset3 = 195;		// 2048 / 7 / 3 * 2
 	moco.power = 0;
 	moco.power_limit = 127;
-	moco.position = moco.arm_offset;
+	moco.position = 0;
 	moco.target = 0;
+	moco.range = 400;
 	moco.direction = 0;
 	moco.meas_angle = 0;
 	moco.old_angle = 0;
 	moco.angle_error = 0;
-	moco.Kp = 8.0f;
+	moco.Kp = 2.0f;
 	moco.Ki = 0.05f;
 	moco.Kd = 75.0f;
 	moco.calibration = 0;
@@ -75,6 +76,10 @@ void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *I2cHandle)
 	else if (moco.mode == POSITION_MODE)
 	{
 		updatePosition();
+	}
+	else if (moco.mode == INDENT_MODE)
+	{
+		updateIndent();
 	}
 }
 
@@ -118,24 +123,27 @@ void updateTorque()
 
 	// border setting must be chosen according the update rate and the max expected rpm
 	const uint16_t border = 100;
-	if (moco.old_angle < border)
+	if (!(moco.mode == INDENT_MODE))
 	{
-		// old_angle was slightly above 0
-		if (moco.meas_angle > (2047-border))
+		if (moco.old_angle < border)
 		{
-			// new angle was slightly below 2047
-			// UNDERFLOW must have happened
-			moco.position = moco.position - 2047;
+			// old_angle was slightly above 0
+			if (moco.meas_angle > (2047-border))
+			{
+				// new angle was slightly below 2047
+				// UNDERFLOW must have happened
+				moco.position = moco.position - 2047;
+			}
 		}
-	}
-	else if (moco.old_angle > (2048-border))
-	{
-		// old_angle was slightly below 2047
-		if (moco.meas_angle < border)
+		else if (moco.old_angle > (2048-border))
 		{
-			// new angle was slightly above 0
-			// OVERFLOW must have happened
-			moco.position = moco.position + 2048;
+			// old_angle was slightly below 2047
+			if (moco.meas_angle < border)
+			{
+				// new angle was slightly above 0
+				// OVERFLOW must have happened
+				moco.position = moco.position + 2048;
+			}
 		}
 	}
 	moco.position = moco.position + moco.angle_error;
@@ -176,6 +184,97 @@ void updateTorque()
 			htim1.Instance->CCR3 = ((sintab[(moco.meas_angle + moco.encoder_offset + moco.angle_ccw + moco.phase_offset3) % sintablen] * (uint16_t)moco.power) >> 7) + 1023;
 		}
 	}
+}
+
+void updateIndent()
+{
+	// determine direction and power
+	moco.position_error = (moco.target - moco.position);
+
+	if (abs(moco.position_error) < moco.range)
+	{
+		proportional 	 = moco.Kp * moco.position_error;
+		moco.integrator	 = limit(moco.integrator + moco.Ki * moco.position_error, -100.0f, 100.0f);
+		integral 		 = moco.integrator + moco.Ki * moco.position_error;
+		differential 	 = 0.9 * differential + 0.1 * moco.Kd * (moco.position_error - moco.old_position_error);
+
+		float power = proportional + integral + differential;
+
+		if (moco.position_error > 0)
+		{
+			moco.direction = 0;
+		}
+		else
+		{
+			moco.direction = 1;
+		}
+
+		setPower(max((uint16_t)abs(power), moco.power_limit));
+		moco.old_position_error = moco.position_error;
+	}
+	else
+	{
+		setPower(0);
+		//moco.old_position_error = 0;
+	}
+
+	updateTorque(moco.meas_angle);
+}
+
+void continuousIndents(uint8_t numIndents)
+{
+	const uint16_t rasterangle = 2048/numIndents;
+	uint8_t actives = 0;
+	for (uint16_t i = 0; i < 2048/rasterangle; i++)
+	{
+		actives += attractor(rasterangle/2+(i)*rasterangle, rasterangle/2);
+	}
+
+	if (actives == 0) setPower(0);
+}
+
+uint8_t attractor(uint16_t position, uint16_t range)
+{
+	/*
+	if ((moco.meas_angle < (position + range)) & (moco.meas_angle > (position - range)) & (moco.meas_angle != 2047))
+	{
+		if (range > 10)
+		{
+			setPower((uint8_t)abs(moco.meas_angle - position)*(127.0f/range+1));
+		}
+		else
+		{
+			setPower(abs(moco.meas_angle - position)*(127/range+1)/2);
+		}
+		if (moco.meas_angle > position)
+		{
+			setDirection(true);
+		}
+		else if (moco.meas_angle < position)
+		{
+			setDirection(false);
+		}
+		return 1;
+	}
+	return 0;
+	*/
+
+	//moco.Kp = 4;
+	moco.Kd = 0;
+	moco.Ki = 0;
+	moco.integrator = 0;
+	if ((moco.position < position + range) && (moco.position > position - range))
+	{
+		moco.target = position;
+		moco.range = range;
+	}
+	/*
+	if (((moco.position - 2047) < position + range) && ((moco.position - 2047) > position - range))
+	{
+		moco.target = position;
+		moco.range = range;
+	}
+	*/
 }
 
 void enableMotor()
@@ -252,6 +351,7 @@ void setPowerLimit(uint8_t power_limit)
 
 void setPower(uint8_t power)
 {
+	//moco.power = moco.power/4 + moco.power/4 + moco.power/4 + power/4;
 	moco.power = power;
 }
 

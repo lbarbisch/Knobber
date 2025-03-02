@@ -17,7 +17,8 @@
 typedef enum
 {
 	TORQUE_MODE,
-	POSITION_MODE
+	POSITION_MODE,
+	INDENT_MODE
 } control_state_type;
 
 typedef struct
@@ -41,6 +42,7 @@ typedef struct
 	int32_t position;
 	int32_t position_error;
 	int32_t target;
+	int32_t range;
 	bool direction;
 	uint16_t meas_angle;
 	uint16_t old_angle;
@@ -63,6 +65,9 @@ void initMotorControl();
 void update();
 void updatePosition();
 void updateTorque();
+void updateIndent();
+void continuousIndents(uint8_t numIndents);
+uint8_t attractor(uint16_t position, uint16_t range);
 void enableMotor();
 void calibrateOffset(uint8_t power);
 void setMode(control_state_type mode);

@@ -43,8 +43,9 @@ void init()
 
 	enableMotor();
 
-
 	initMotorControl();
+
+	moco.mode = INDENT_MODE;
 
 	if (moco.position > 2048/2)
 	{
@@ -54,18 +55,22 @@ void init()
 }
 
 uint32_t timer = 0;
+uint16_t indents = 24;
 
 void mainloop()
 {
 	update();
-	HAL_UART_Receive_IT(&huart1, &rxchar, 1);
+	// HAL_UART_Receive_IT(&huart1, &rxchar, 1);
+	/*
 	if (task == 1)
 	{
 		calibrateOffset(127);
 		task = 0;
 	}
-	getPhaseCurrents(current);
+	*/
+	// getPhaseCurrents(current);
 
+	/*
 	if ((HAL_GetTick() > ran_ticks) & (ran == 0))
 	{
 		ran = 1;
@@ -74,6 +79,9 @@ void mainloop()
 			moco.position -= 2048;
 		}
 	}
+	*/
+	//attractor(500, 100);
+	continuousIndents(indents);
 
 	//char txbuf[24] = {0};
 	//sprintf(txbuf, "%d\n", moco.position);
