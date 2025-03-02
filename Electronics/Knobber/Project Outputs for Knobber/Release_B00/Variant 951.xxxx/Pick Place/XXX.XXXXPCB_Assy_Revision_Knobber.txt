@@ -1,11 +1,11 @@
 Altium Designer Pick and Place Locations
-C:\Users\Lukas\AppData\Local\TempReleases\Snapshot\6\Variant 951.xxxx\Pick Place\XXX.XXXXPCB_Assy_Revision_Knobber.txt
+C:\Users\Lukas\AppData\Local\TempReleases\Snapshot\1\Variant 951.xxxx\Pick Place\XXX.XXXXPCB_Assy_Revision_Knobber.txt
 
 ========================================================================================================================
 File Design Information:
 
 Date:       23.02.25
-Time:       14:04
+Time:       17:04
 Revision:   Not in VersionControl
 Variant:    951.xxxx
 Units used: mm
