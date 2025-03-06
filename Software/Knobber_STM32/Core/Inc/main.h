@@ -7,7 +7,7 @@
   ******************************************************************************
   * @attention
   *
-  * Copyright (c) 2024 STMicroelectronics.
+  * Copyright (c) 2025 STMicroelectronics.
   * All rights reserved.
   *
   * This software is licensed under terms that can be found in the LICENSE file
@@ -27,7 +27,7 @@ extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32g0xx_hal.h"
+#include "stm32l4xx_hal.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -69,26 +69,22 @@ void Error_Handler(void);
 #define ADC_VIN_GPIO_Port GPIOA
 #define ADC_Angle_Pin GPIO_PIN_4
 #define ADC_Angle_GPIO_Port GPIOA
-#define Motor_U_Pin GPIO_PIN_8
-#define Motor_U_GPIO_Port GPIOA
+#define nSLEEP_Pin GPIO_PIN_0
+#define nSLEEP_GPIO_Port GPIOB
+#define ENABLE_Pin GPIO_PIN_1
+#define ENABLE_GPIO_Port GPIOB
+#define Motor_W_Pin GPIO_PIN_8
+#define Motor_W_GPIO_Port GPIOA
 #define Motor_V_Pin GPIO_PIN_9
 #define Motor_V_GPIO_Port GPIOA
-#define Enable_U_Pin GPIO_PIN_9
-#define Enable_U_GPIO_Port GPIOD
-#define Motor_W_Pin GPIO_PIN_10
-#define Motor_W_GPIO_Port GPIOA
-#define Enable_W_Pin GPIO_PIN_11
-#define Enable_W_GPIO_Port GPIOA
-#define Enable_V_Pin GPIO_PIN_12
-#define Enable_V_GPIO_Port GPIOA
-#define nSLEEP_Pin GPIO_PIN_15
-#define nSLEEP_GPIO_Port GPIOA
-#define nFAULT_Pin GPIO_PIN_8
-#define nFAULT_GPIO_Port GPIOC
-#define SPI1_MOSI_Pin GPIO_PIN_6
-#define SPI1_MOSI_GPIO_Port GPIOD
+#define Motor_U_Pin GPIO_PIN_10
+#define Motor_U_GPIO_Port GPIOA
+#define nFAULT_Pin GPIO_PIN_15
+#define nFAULT_GPIO_Port GPIOA
 #define SPI1_SCK_Pin GPIO_PIN_3
 #define SPI1_SCK_GPIO_Port GPIOB
+#define SPI1_MOSI_Pin GPIO_PIN_5
+#define SPI1_MOSI_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

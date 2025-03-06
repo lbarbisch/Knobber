@@ -10,18 +10,19 @@
 
 #include "main.h"
 #include "AP102_Driver.h"
-#include "AS5600.h"
-#include "Motorcontrol.h"
+#include "motorcontroller.h"
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 void init();
 void mainloop();
+void getPhaseCurrents(float* _current);
 float getSupplyVoltage();
-void continuousIndents(uint8_t numIndents);
-uint8_t attractor(uint16_t position, uint16_t range);
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart1);
+void parseCommandandUpdate(uint8_t* buffer, uint8_t index);
 
 
 #endif /* INC_APPLICATION_H_ */

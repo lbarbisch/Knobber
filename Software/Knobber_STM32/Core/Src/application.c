@@ -6,132 +6,225 @@
  */
 
 #include "application.h"
-#include "stm32g0xx_hal.h"
+#include "stm32l4xx_hal.h"
+#include "usbd_hid.h"
 
-extern ADC_HandleTypeDef hadc1;
 extern UART_HandleTypeDef huart1;
+extern TIM_HandleTypeDef htim1;
+extern ADC_HandleTypeDef hadc1;
 extern I2C_HandleTypeDef hi2c2;
+extern USBD_HandleTypeDef hUsbDeviceFS;
 
-extern uint16_t _angle;
+typedef struct
+{
+	uint8_t button;
+	int8_t mouse_x;
+	int8_t mouse_y;
+	int8_t wheel;
+} mouseHID;
 
-volatile uint16_t currentAngle = 0;
-volatile uint8_t Indents = 16;
-bool faultstate = false;
-uint8_t status = 0;
+mouseHID mousehid = {0,0,0,0};
+
 float voltage = 0;
+extern Controller moco;
 
-uint16_t dma_results[5];
+uint8_t rxbuf[64] = {0};
+uint8_t rxchar;
+uint8_t rxbuf_index = 0;
 
-uint8_t Buffer[25] = {0};
+uint16_t adc_dma_results[5];
+uint16_t adc_curr_idle[3];
+float current[3];
 
-const uint16_t angleoffset = 268;
+uint8_t task = 0;
+uint8_t ran = 0;
+uint32_t ran_ticks = 50;
 
-volatile bool dir = false;
-
+int32_t old_position;
 
 void init()
 {
-	// setup AS5600
-	AS5600_init(hi2c2, AS5600_CONF_L_HYST_OFF | AS5600_CONF_L_OUTS_AN | AS5600_CONF_L_PM_NOM | AS5600_CONF_L_PWMF_115,
-					   AS5600_CONF_H_FTH_SLOW | AS5600_CONF_H_SF_2x | AS5600_CONF_L_HYST_OFF
-					   );
+	setMode(POSITION_MODE);
 
-	setColor(0, 0, 128, 32);
+	HAL_ADC_Start_DMA(&hadc1, (uint32_t *) adc_dma_results, 5);
 
-	initMotor();
+	HAL_Delay(50);
+	adc_curr_idle[0] = adc_dma_results[0];
+	adc_curr_idle[1] = adc_dma_results[1];
+	adc_curr_idle[2] = adc_dma_results[2];
+
+
 	enableMotor();
 
-	// start ADC DMA for current, supply voltage and Motorangle
-	HAL_ADC_Start_DMA(&hadc1, (uint32_t *) dma_results, 5);
-	//HAL_I2C_Mem_Read_IT(&hi2c2, AS5600_I2C_ADDR, AS5600_REG_RAWANGLE_H, I2C_MEMADD_SIZE_8BIT, (uint8_t *) dma_results, 2);
+	initMotorControl();
 
-	//setMotorPower(32);
+	moco.mode = INDENT_MODE;
+
+	if (moco.position > 2048/2)
+	{
+		moco.position += 2048;
+	}
+	//calibrateOffset(64);
 }
 
+uint32_t timer = 0;
+uint16_t indents = 36;
+int32_t dings = 0;
 
 void mainloop()
 {
-	//setMotorAngle(AS5600_getRawAngle(hi2c2)/2*0.25 + getMotorAngle()*0.75);
-	setMotorAngle(AS5600_getRawAngle(hi2c2)/2);
+	update();
+	continuousIndents(indents);
 
-	currentAngle = getMotorAngle();
-
-	continuousIndents(Indents);
-
-	updateMotor();
-}
-
-void continuousIndents(uint8_t numIndents)
-{
-	const uint16_t rasterangle = 2048/numIndents;
-	uint8_t actives = 0;
-	for (uint16_t i = 0; i < 2048/rasterangle; i++)
+	/*
+	if (task == 1)
 	{
-		actives += attractor(rasterangle/2+(i)*rasterangle, rasterangle/4);
+		calibrateOffset(127);
+		task = 0;
 	}
+	*/
+	// getPhaseCurrents(current);
 
-	if (actives == 0) setMotorPower(0);
-}
-
-uint8_t attractor(uint16_t position, uint16_t range)
-{
-	uint16_t currentAngle = getMotorAngle();
-	// check if currentAngle is within range
-	if ((currentAngle < (position + range)) & (currentAngle > (position - range)) & (currentAngle != 2047))
+	/*
+	if ((HAL_GetTick() > ran_ticks) & (ran == 0))
 	{
-		if (range > 10)
+		ran = 1;
+		if (moco.position > 2048/2)
 		{
-			setMotorPower((uint8_t)abs(currentAngle - position)*(127.0f/range+1));
+			moco.position -= 2048;
 		}
-		else
-		{
-			setMotorPower(abs(currentAngle - position)*(127/range+1)/2);
-		}
-		if (currentAngle > position)
-		{
-			setMotorDirection(true);
-		}
-		else if (currentAngle < position)
-		{
-			setMotorDirection(false);
-		}
-		return 1;
 	}
-	return 0;
-}
+	*/
+	//attractor(500, 100);
 
+
+
+	//moco.old_position_error = moco.position_error;
+
+
+
+	if (dings != moco.indent_increments)
+	{
+		mousehid.wheel = (moco.indent_increments-dings)*2;
+		USBD_HID_SendReport(&hUsbDeviceFS, &mousehid, sizeof (mousehid));
+		mousehid.wheel = 0;
+		dings = moco.indent_increments;
+	}
+	//ran_ticks = HAL_GetTick();
+
+	//char txbuf[24] = {0};
+	//sprintf(txbuf, "%d\n", moco.position);
+	//HAL_UART_Transmit(&huart1, txbuf, strlen(txbuf), 50);
+
+	//if (HAL_GetTick() > timer+500)
+	//{
+	//	if (moco.target == 0) moco.target = 200;
+	//	else if (moco.target == 200) moco.target = 0;
+	//	timer = HAL_GetTick();
+	//}
+}
 
 float getSupplyVoltage()
 {
-	voltage = dma_results[3] / 125.27;
 	return voltage;
 }
 
-
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc)
+void getPhaseCurrents(float* _current)
 {
-	faultstate = HAL_GPIO_ReadPin(nFAULT_GPIO_Port, nFAULT_Pin);
-
-	//uint16_t raw_angle = (dma_results[4]/2);
-
-	//setMotorAngle(raw_angle*0.25 + getMotorAngle()*0.75);
-	//updateMotor();
+	_current[0] = _current[0] * 0.9 + 0.1 * ((float)adc_dma_results[0] - (float)adc_curr_idle[0]) * 0.64453125f;
+	_current[1] = _current[1] * 0.9 + 0.1 * ((float)adc_dma_results[1] - (float)adc_curr_idle[1]) * 0.64453125f;
+	_current[2] = _current[2] * 0.9 + 0.1 * ((float)adc_dma_results[2] - (float)adc_curr_idle[2]) * 0.64453125f;
 }
 
-void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *I2cHandle)
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	faultstate = HAL_GPIO_ReadPin(nFAULT_GPIO_Port, nFAULT_Pin);
-
-	uint16_t raw_angle = (dma_results[0] + ((dma_results[1] & 0x0F)<<8))/2;
-	//uint16_t raw_angle = (adc_dma_results[4]/2);
-
-	setMotorAngle(raw_angle*0.25 + getMotorAngle()*0.75);
-	updateMotor();
+	__HAL_UART_CLEAR_FLAG(huart, 0xFF);
+	if(rxbuf_index < 20)
+	{
+		rxbuf[rxbuf_index] = rxchar;
+		rxbuf_index++;
+	}
+	else rxbuf_index = 0;
+	if ((rxchar == '\r') || (rxchar == '\n'))
+	{
+		rxbuf[rxbuf_index] = 0;
+		if (rxbuf_index > 1)
+		{
+			parseCommandandUpdate(rxbuf, rxbuf_index);
+		}
+		rxbuf_index = 0;
+	}
 }
 
-void HAL_I2C_ErrorCallback(I2C_HandleTypeDef *I2cHandle)
+void parseCommandandUpdate(uint8_t* buffer, uint8_t index)
 {
-  /* Turn LED3 on: Transfer error in reception/transmission process */
+	unsigned int _direction = 0;
+	unsigned int _power = 0;
+	signed int _target = 0;
+	signed int _position = 0;
+	unsigned int _red = 0;
+	unsigned int _green = 0;
+	unsigned int _blue = 0;
 
+	switch (buffer[0])
+	{
+		case 'T':
+			if (sscanf((char*)buffer, "T%u_%u", &_direction, &_power) == 2)
+			{
+				uint8_t temp_direction = (uint8_t)_direction;
+				uint8_t temp_power = (uint8_t)_power;
+				setMode(TORQUE_MODE);
+				setDirection(temp_direction);
+				setPower(temp_power);
+			}
+			break;
+		case 'P':
+			if (sscanf((char *)buffer, "P%d_%u", &_target, &_power) == 2)
+			{
+				uint32_t temp_target = (uint32_t)_target;
+				uint8_t temp_power = (uint8_t)_power;
+				setMode(POSITION_MODE);
+				setTarget(temp_target);
+				setPower(temp_power);
+			}
+			break;
+		case 'C':
+			if (sscanf((char *)buffer, "C%u_%u_%u", &_red, &_green, &_blue) == 3)
+			{
+				uint8_t red = (uint8_t)_red;
+				uint8_t green = (uint8_t)_green;
+				uint8_t blue = (uint8_t)_blue;
+				setColor(red, green, blue, 31);
+			}
+			break;
+		case 'G':
+			if (buffer[1] == '?')
+			{
+				char txbuf[32] = {0};
+				_power = (unsigned int)getPower();
+				_position = (signed int)getPosition();
+				sprintf(txbuf, "%u_%d\n", _power, _position);
+				HAL_UART_Transmit(&huart1, (uint8_t *)txbuf, (uint16_t)strlen(txbuf), 50);
+			}
+			break;
+		case '*':
+			// Special SCPI commands
+			if (buffer[1] == 'I')
+			{
+				if (buffer[2] == 'D')
+				{
+					if (buffer[3] == 'N')
+					{
+						if (buffer[4] == '?')
+						{
+							char txbuf[] = "Knobber\n";
+							HAL_UART_Transmit(&huart1, (uint8_t *)txbuf, (uint16_t)strlen(txbuf), 50);
+						}
+					}
+				}
+			}
+			break;
+		default:
+			break;
+	}
 }
-
