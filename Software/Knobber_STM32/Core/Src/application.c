@@ -23,7 +23,19 @@ typedef struct
 	int8_t wheel;
 } mouseHID;
 
+typedef enum
+{
+    INDENT_64,
+    INDENT_32,
+    INDENT_16,
+	INDENT_8,
+	INDENT_4,
+	INDENT_1
+} States;
+
 mouseHID mousehid = {0,0,0,0};
+
+States currentState = INDENT_32;
 
 float voltage = 0;
 extern Controller moco;
@@ -64,44 +76,38 @@ void init()
 	{
 		moco.position += 2048;
 	}
-	//calibrateOffset(64);
 }
 
-uint32_t timer = 0;
-uint16_t indents = 36;
+//uint16_t indents = 36;
 int32_t dings = 0;
+uint8_t oldButtonState = 0;
 
 void mainloop()
 {
 	update();
-	continuousIndents(indents);
+	//continuousIndents(indents);
 
-	/*
-	if (task == 1)
+	switch (currentState)
 	{
-		calibrateOffset(127);
-		task = 0;
+	case INDENT_64:
+		continuousIndents(64);
+		break;
+	case INDENT_32:
+		continuousIndents(32);
+		break;
+	case INDENT_16:
+		continuousIndents(16);
+		break;
+	case INDENT_8:
+		continuousIndents(8);
+		break;
+	case INDENT_4:
+		continuousIndents(4);
+		break;
+	case INDENT_1:
+		continuousIndents(1);
+		break;
 	}
-	*/
-	// getPhaseCurrents(current);
-
-	/*
-	if ((HAL_GetTick() > ran_ticks) & (ran == 0))
-	{
-		ran = 1;
-		if (moco.position > 2048/2)
-		{
-			moco.position -= 2048;
-		}
-	}
-	*/
-	//attractor(500, 100);
-
-
-
-	//moco.old_position_error = moco.position_error;
-
-
 
 	if (dings != moco.indent_increments)
 	{
@@ -110,18 +116,39 @@ void mainloop()
 		mousehid.wheel = 0;
 		dings = moco.indent_increments;
 	}
-	//ran_ticks = HAL_GetTick();
 
-	//char txbuf[24] = {0};
-	//sprintf(txbuf, "%d\n", moco.position);
-	//HAL_UART_Transmit(&huart1, txbuf, strlen(txbuf), 50);
-
-	//if (HAL_GetTick() > timer+500)
-	//{
-	//	if (moco.target == 0) moco.target = 200;
-	//	else if (moco.target == 200) moco.target = 0;
-	//	timer = HAL_GetTick();
-	//}
+	// next state logic
+	if ((HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin) == 1) && oldButtonState == 0)
+	{
+		HAL_Delay(20);
+		if (HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin))
+		{
+			switch (currentState)
+			{
+			case INDENT_64:
+				currentState = INDENT_32;
+				break;
+			case INDENT_32:
+				currentState = INDENT_16;
+				break;
+			case INDENT_16:
+				currentState = INDENT_8;
+				break;
+			case INDENT_8:
+				currentState = INDENT_4;
+				break;
+			case INDENT_4:
+				currentState = INDENT_1;
+				break;
+			case INDENT_1:
+				currentState = INDENT_64;
+				break;
+			default:
+				break;
+			}
+		}
+	}
+	oldButtonState = HAL_GPIO_ReadPin(Button_GPIO_Port, Button_Pin);
 }
 
 float getSupplyVoltage()
@@ -155,6 +182,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		rxbuf_index = 0;
 	}
 }
+
 
 void parseCommandandUpdate(uint8_t* buffer, uint8_t index)
 {
@@ -228,3 +256,4 @@ void parseCommandandUpdate(uint8_t* buffer, uint8_t index)
 			break;
 	}
 }
+

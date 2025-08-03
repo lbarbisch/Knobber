@@ -85,6 +85,8 @@ void Error_Handler(void);
 #define SPI1_SCK_GPIO_Port GPIOB
 #define SPI1_MOSI_Pin GPIO_PIN_5
 #define SPI1_MOSI_GPIO_Port GPIOB
+#define Button_Pin GPIO_PIN_3
+#define Button_GPIO_Port GPIOH
 
 /* USER CODE BEGIN Private defines */
 
