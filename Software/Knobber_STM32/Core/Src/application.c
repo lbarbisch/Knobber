@@ -112,7 +112,7 @@ void mainloop()
 	if (dings != moco.indent_increments)
 	{
 		mousehid.wheel = (moco.indent_increments-dings)*2;
-		USBD_HID_SendReport(&hUsbDeviceFS, &mousehid, sizeof (mousehid));
+		USBD_HID_SendReport(&hUsbDeviceFS, ((uint8_t*)&mousehid), sizeof (mousehid));
 		mousehid.wheel = 0;
 		dings = moco.indent_increments;
 	}
